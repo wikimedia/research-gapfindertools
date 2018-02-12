@@ -17,6 +17,6 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path('section-translation/', include('sectiontranslation.urls')),
+    path('section-mapping/', include('sectionmapping.urls')),
     path('admin/', admin.site.urls),
 ]

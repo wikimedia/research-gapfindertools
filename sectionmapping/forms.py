@@ -2,9 +2,9 @@ from django.forms import ModelForm
 from . import models
 
 
-class TranslatorForm(ModelForm):
+class MapperForm(ModelForm):
     class Meta:
-        model = models.Translator
-        fields = ['username', 'ar_proficiency', 'en_proficiency',
+        model = models.Mapper
+        fields = ['wiki_username', 'ar_proficiency', 'en_proficiency',
                   'es_proficiency', 'fr_proficiency', 'ja_proficiency',
                   'ru_proficiency']
