@@ -13,10 +13,10 @@ def index(request):
             new_mapper = form.save()
             # TODO: obfuscate
             request.session['mapper'] = new_mapper.id
-            return HttpResponseRedirect('translate')
+            return HttpResponseRedirect('map')
     else:
         if request.session.get('mapper'):
-            return HttpResponseRedirect('translate')
+            return HttpResponseRedirect('map')
         else:
             form = forms.MapperForm()
 
@@ -25,5 +25,6 @@ def index(request):
     })
 
 
-def translate(request):
-    return HttpResponse('translate page')
+def mapping(request):
+    return HttpResponse('translate page: %d' %
+                        (request.session['mapper']))

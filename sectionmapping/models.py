@@ -39,40 +39,50 @@ class Mapper(models.Model):
         blank=True, max_length=1, choices=LANGUAGE_PROFICIENCIES)
     ru_proficiency = models.CharField(
         blank=True, max_length=1, choices=LANGUAGE_PROFICIENCIES)
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.wiki_username
 
 
 class Section(models.Model):
-    source_title = models.TextField("Section title in source language")
-    source_language = models.CharField(
-        "Section source language",
-        db_index=True,
+    title = models.TextField("Section title")
+    language = models.CharField(
+        "Section language",
         choices=LANGUAGE_CHOICES,
         max_length=8
     )
     source_rank = models.PositiveIntegerField(
         "Section rank in source language",
         db_index=True)
-    # JSON encoded
-    target_titles = models.TextField(
-        "List of section titles in target language"
-    )
-    target_language = models.CharField(
-        "Section target language",
-        db_index=True,
-        choices=LANGUAGE_CHOICES,
-        max_length=8
-    )
-    map_count = models.PositiveSmallIntegerField(
-        "Number of times this entry has been mapped",
-        default=0
-    )
 
     class Meta:
-        unique_together = ('source_title', 'source_language')
+        unique_together = ('title', 'language')
 
     def __str__(self):
-        return "%s–%s: %s" % (self.source_language, self.target_language,
-                              self.source_title)
+        return "%s: %s" % (self.language, self.title)
+
+
+class SectionMapping(models.Model):
+    source = models.ForeignKey(Section, on_delete=models.CASCADE,
+                               related_name="source")
+    target = models.ForeignKey(Section, on_delete=models.CASCADE,
+                               related_name="target")
+    target_rank = models.PositiveIntegerField(
+        "Section rank in target language")
+
+    class Meta:
+        unique_together = ('source', 'target')
+
+    def __str__(self):
+        return "%s–%s: %s — %s" % (self.source.language, self.target.language,
+                                   self.source.title, self.target.title)
+
+
+class MapperSectionMapping(models.Model):
+    mapper = models.ForeignKey(Mapper, on_delete=models.CASCADE)
+    section_mapping = models.ForeignKey(SectionMapping,
+                                        on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('mapper', 'section_mapping')
