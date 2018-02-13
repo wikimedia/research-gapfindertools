@@ -39,6 +39,7 @@ def mapping(request):
     try:
         mapper = Mapper.objects.get(id=request.session['mapper'])
     except ObjectDoesNotExist:
+        del request.session['mapper']
         return HttpResponseRedirect(reverse('index'))
 
     if request.method == 'POST':
