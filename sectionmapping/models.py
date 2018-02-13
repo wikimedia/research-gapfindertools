@@ -1,4 +1,8 @@
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+import json
 
 
 LANGUAGE_CHOICES = (
@@ -9,6 +13,8 @@ LANGUAGE_CHOICES = (
     ('ja', 'Japanese'),
     ('ru', 'Russian')
 )
+
+MIN_PROFICIENCY = '3'  # minimum proficiency needed for mapping
 
 LANGUAGE_PROFICIENCIES = (
     ('0', "0 - If you don't understand the language at all."),
@@ -26,6 +32,7 @@ LANGUAGE_PROFICIENCIES = (
 
 
 class Mapper(models.Model):
+    """User info"""
     wiki_username = models.CharField("Wiki username", max_length=255)
     ar_proficiency = models.CharField(
         blank=True, max_length=1, choices=LANGUAGE_PROFICIENCIES)
@@ -44,17 +51,59 @@ class Mapper(models.Model):
     def __str__(self):
         return self.wiki_username
 
+    def get_source_language(self):
+        source_language = None
+        source_proficiency = MIN_PROFICIENCY
+        if self.ar_proficiency >= source_proficiency:
+            source_proficiency = self.ar_proficiency
+            source_language = 'ar'
+        if self.en_proficiency >= source_proficiency:
+            source_proficiency = self.en_proficiency
+            source_language = 'en'
+        if self.es_proficiency >= source_proficiency:
+            source_proficiency = self.es_proficiency
+            source_language = 'es'
+        if self.fr_proficiency >= source_proficiency:
+            source_proficiency = self.fr_proficiency
+            source_language = 'fr'
+        if self.ja_proficiency >= source_proficiency:
+            source_proficiency = self.ja_proficiency
+            source_language = 'ja'
+        if self.ru_proficiency >= source_proficiency:
+            source_proficiency = self.ru_proficiency
+            source_language = 'ru'
+        return source_language
+
+    def get_target_languages(self):
+        all_languages = set()
+        if self.ar_proficiency >= MIN_PROFICIENCY:
+            all_languages.add('ar')
+        if self.en_proficiency >= MIN_PROFICIENCY:
+            all_languages.add('en')
+        if self.es_proficiency >= MIN_PROFICIENCY:
+            all_languages.add('es')
+        if self.fr_proficiency >= MIN_PROFICIENCY:
+            all_languages.add('fr')
+        if self.ja_proficiency >= MIN_PROFICIENCY:
+            all_languages.add('ja')
+        if self.ru_proficiency >= MIN_PROFICIENCY:
+            all_languages.add('ru')
+
+        source_language = self.get_source_language()
+        if source_language in all_languages:
+            all_languages.remove(source_language)
+        return list(all_languages)
+
 
 class Section(models.Model):
-    title = models.TextField("Section title")
-    language = models.CharField(
-        "Section language",
-        choices=LANGUAGE_CHOICES,
-        max_length=8
-    )
-    source_rank = models.PositiveIntegerField(
-        "Section rank in source language",
-        db_index=True)
+    """Model generated mappings"""
+    title = models.TextField()
+    language = models.CharField(choices=LANGUAGE_CHOICES,
+                                db_index=True, max_length=8)
+    # lower rank = section appears more frequently
+    rank = models.PositiveIntegerField(db_index=True)
+    targets = models.TextField(
+        "JSON dump of section targets in multiple languages.")
 
     class Meta:
         unique_together = ('title', 'language')
@@ -63,26 +112,63 @@ class Section(models.Model):
         return "%s: %s" % (self.language, self.title)
 
 
-class SectionMapping(models.Model):
-    source = models.ForeignKey(Section, on_delete=models.CASCADE,
-                               related_name="source")
-    target = models.ForeignKey(Section, on_delete=models.CASCADE,
-                               related_name="target")
-    target_rank = models.PositiveIntegerField(
-        "Section rank in target language")
+class Mapping(models.Model):
+    """User generated mappings"""
+    mapper = models.ForeignKey(Mapper, on_delete=models.CASCADE)
+    source = models.ForeignKey(Section, on_delete=models.CASCADE)
+    targets = models.TextField("JSON dump of section targets. "
+                               "Includes user defined targets.")
+    created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ('source', 'target')
+        unique_together = ('mapper', 'source')
 
     def __str__(self):
-        return "%s–%s: %s — %s" % (self.source.language, self.target.language,
-                                   self.source.title, self.target.title)
+        return "%s: %s" % (self.mapper, self.source)
 
 
-class MapperSectionMapping(models.Model):
-    mapper = models.ForeignKey(Mapper, on_delete=models.CASCADE)
-    section_mapping = models.ForeignKey(SectionMapping,
-                                        on_delete=models.CASCADE)
+class MappingSummary(models.Model):
+    """Used to query missing mappings"""
+    source = models.ForeignKey(Section, on_delete=models.CASCADE)
+    ar_count = models.PositiveSmallIntegerField(default=0)
+    en_count = models.PositiveSmallIntegerField(default=0)
+    es_count = models.PositiveSmallIntegerField(default=0)
+    fr_count = models.PositiveSmallIntegerField(default=0)
+    ja_count = models.PositiveSmallIntegerField(default=0)
+    ru_count = models.PositiveSmallIntegerField(default=0)
 
     class Meta:
-        unique_together = ('mapper', 'section_mapping')
+        ordering = ['ar_count', 'en_count', 'es_count', 'fr_count',
+                    'ja_count', 'ru_count']
+
+    def __str__(self):
+        return str(self.source)
+
+
+@receiver(post_save, sender=Section)
+def create_mapping_summary(sender, instance, **kwargs):
+    """Create mapping summary when a new section is created."""
+    if kwargs['created']:
+        new_mapping_summary = MappingSummary(source=instance)
+        new_mapping_summary.save()
+
+
+@receiver(post_save, sender=Mapping)
+def update_mapping_summary(sender, instance, **kwargs):
+    """Update mapping summary when a new mapping is created."""
+    if kwargs['created']:
+        mapping_summary = MappingSummary.objects.get(source=instance.source)
+        targets = json.loads(instance.targets)
+        if 'ar' in targets:
+            mapping_summary.ar_count += 1
+        if 'en' in targets:
+            mapping_summary.en_count += 1
+        if 'es' in targets:
+            mapping_summary.es_count += 1
+        if 'fr' in targets:
+            mapping_summary.fr_count += 1
+        if 'ja' in targets:
+            mapping_summary.ja_count += 1
+        if 'ru' in targets:
+            mapping_summary.ru_count += 1
+        mapping_summary.save()
