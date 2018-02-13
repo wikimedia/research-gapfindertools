@@ -1,11 +1,16 @@
 import json
+from random import shuffle
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse
 
-from .models import Mapper, Mapping, Section, MappingSummary
-from .forms import MapperForm
+from .models import Mapper, Mapping, Section, MappingSummary, LANGUAGE_CHOICES
+from .forms import MapForm, MapperForm
+
+
+LANGUAGE_CHOICES_DICT = dict(LANGUAGE_CHOICES)
 
 
 def index(request):
@@ -15,10 +20,10 @@ def index(request):
         if form.is_valid():
             new_mapper = form.save()
             request.session['mapper'] = new_mapper.id
-            return HttpResponseRedirect('map')
+            return HttpResponseRedirect(reverse('map'))
     else:
         if request.session.get('mapper'):
-            return HttpResponseRedirect('map')
+            return HttpResponseRedirect(reverse('map'))
         else:
             form = MapperForm()
 
@@ -28,32 +33,82 @@ def index(request):
 
 
 def mapping(request):
-    if not request.session['mapper']:
-        return HttpResponseRedirect('index')
+    # TODO: decorate
+    if 'mapper' not in request.session:
+        return HttpResponseRedirect(reverse('index'))
     try:
         mapper = Mapper.objects.get(id=request.session['mapper'])
     except ObjectDoesNotExist:
-        return HttpResponseRedirect('index')
+        return HttpResponseRedirect(reverse('index'))
 
-    source_language = mapper.get_source_language()
-    target_languages = mapper.get_target_languages()
-    print(source_language)
-    print(target_languages)
-    if not source_language or not target_languages:
-        return HttpResponse(
-            "Sorry, we don't have any data for you at this time.")
+    if request.method == 'POST':
+        language = request.POST.get('language')
+        title = request.POST.get('title')
+        if not language or not title:
+            return HttpResponseRedirect(reverse('index'))
+        section = Section.objects\
+                         .filter(language=language, title=title)\
+                         .first()
+        if not section:
+            return HttpResponseRedirect(reverse('index'))
 
-    mapping_summary = MappingSummary.objects.filter(
-        source__language=source_language).first()
-    if not mapping_summary:
-        return HttpResponse("No data at this time.")
+        targets = {}
+        ar = request.POST.get('ar')
+        if ar:
+            targets['ar'] = ar
+        en = request.POST.get('en')
+        if en:
+            targets['en'] = en
+        es = request.POST.get('es')
+        if es:
+            targets['es'] = es
+        fr = request.POST.get('fr')
+        if fr:
+            targets['fr'] = fr
+        ja = request.POST.get('ja')
+        if ja:
+            targets['ja'] = ja
+        ru = request.POST.get('ru')
+        if ru:
+            targets['ru'] = ru
 
-    targets = json.loads(mapping_summary.source.targets)
-    questions = {language: targets[language] for language in target_languages}
-    print(questions)
+        new_mapping = Mapping(mapper=mapper,
+                              source=section,
+                              targets=json.dumps(targets, ensure_ascii=False))
+        new_mapping.save()
+        return HttpResponseRedirect(reverse('map'))
+    else:
+        source_language = mapper.get_source_language()
+        target_languages = mapper.get_target_languages()
+        if not source_language or not target_languages:
+            return HttpResponse(
+                "Sorry, we don't have any data for you at this time.")
 
-    return render(request, "map.html", {
-        'mapper': mapper,
-        'source': mapping_summary.source.title,
-        'questions': questions
-    })
+        user_mappings = Mapping.objects.filter(mapper=mapper)\
+                                       .values("source__id")
+        mapping_summary = MappingSummary.objects\
+                                        .filter(source__language=source_language)
+        if user_mappings:
+            mapping_summary = mapping_summary\
+                              .exclude(source__id__in=user_mappings)
+        mapping_summary = mapping_summary.first()
+
+        if not mapping_summary:
+            return HttpResponse("No data at this time.")
+
+        targets = json.loads(mapping_summary.source.targets)
+        # TODO: make ordered dict
+        questions = {}
+        for lang_code in target_languages:
+            shuffle(targets[lang_code])
+            questions[lang_code] = {
+                'language': LANGUAGE_CHOICES_DICT[lang_code],
+                'targets': targets[lang_code]
+            }
+
+        return render(request, "map.html", {
+            'mapper': mapper,
+            'title': mapping_summary.source.title,
+            'language': mapping_summary.source.language,
+            'questions': questions
+        })

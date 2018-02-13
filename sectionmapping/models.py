@@ -138,8 +138,8 @@ class MappingSummary(models.Model):
     ru_count = models.PositiveSmallIntegerField(default=0)
 
     class Meta:
-        ordering = ['ar_count', 'en_count', 'es_count', 'fr_count',
-                    'ja_count', 'ru_count']
+        ordering = ['source__rank', 'ar_count', 'en_count',
+                    'es_count', 'fr_count', 'ja_count', 'ru_count']
 
     def __str__(self):
         return str(self.source)

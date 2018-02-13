@@ -4,28 +4,26 @@
 
 {% block content %}
 
-{{ mapper }}
-<br />
-{{ source }}
-<br />
-{{ questions }}
+<h3>{{ title }}</h3>
 
-<!-- <form action="{% url 'map' %}" method="post">
-     {% csrf_token %}
-     {{ form.non_field_errors }}
+<form action="{% url 'map' %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="title" value="{{ title }}" />
+    <input type="hidden" name="language" value="{{ language }}" />
 
-     {% for field in form %}
-     <div class="field-wrapper">
-     {{ field.errors }}
-     {{ field.label_tag }} {{ field }}
-     {% if field.help_text %}
-     <p class="help">{{ field.help_text|safe }}</p>
-     {% endif %}
-     </div>
-     {% endfor %}
+    {% for lang_code, data in questions.items %}
+    <div class="field-wrapper">
+        <label for="{{ lang_code }}">{{ data.language }}</label>
+        <select name="{{ lang_code }}">
+            <option value="">---</option>
+            {% for target in data.targets %}
+            <option value="{{ target }}">{{ target }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    {% endfor %}
 
-     <input type="submit" value="Save & Next">
-     </form>
--->
+    <input type="submit" value="Save & Next">
+</form>
 
 {% endblock %}
