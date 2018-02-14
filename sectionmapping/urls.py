@@ -3,6 +3,10 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('map', views.mapping, name='map')
+    path('', views.index, {
+        "template_name": "sectionmapping/index.html"
+    }, name='index'),
+    path('map', views.mapping, {
+        "template_name": "sectionmapping/map.html"
+    }, name='map')
 ]

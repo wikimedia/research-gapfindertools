@@ -13,7 +13,7 @@ from .forms import MapForm, MapperForm
 LANGUAGE_CHOICES_DICT = dict(LANGUAGE_CHOICES)
 
 
-def index(request):
+def index(request, template_name):
     # del request.session['mapper']
     if request.method == 'POST':
         form = MapperForm(request.POST)
@@ -27,12 +27,12 @@ def index(request):
         else:
             form = MapperForm()
 
-    return render(request, "index.html", {
+    return render(request, template_name, {
         'form': form
     })
 
 
-def mapping(request):
+def mapping(request, template_name):
     # TODO: decorate
     if 'mapper' not in request.session:
         return HttpResponseRedirect(reverse('index'))
@@ -112,7 +112,7 @@ def mapping(request):
                 'targets': targets[lang_code]
             }
 
-        return render(request, "map.html", {
+        return render(request, template_name, {
             'mapper': mapper,
             'title': mapping_summary.source.title,
             'language': mapping_summary.source.language,
