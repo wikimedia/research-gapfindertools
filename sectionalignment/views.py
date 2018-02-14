@@ -15,18 +15,19 @@ LANGUAGE_CHOICES_DICT = dict(LANGUAGE_CHOICES)
 
 
 def index(request, template_name):
-    # del request.session['mapper']
+    # del request.session['user-id']
     if request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
-            new_mapper = form.save()
-            request.session['mapper'] = new_mapper.id
+            new_user = form.save()
+            request.session['user-id'] = new_user.id
             return HttpResponseRedirect(reverse('sectionalignment:mapping'))
     else:
-        if request.session.get('mapper'):
+        change_user_data = request.GET.get('change', None)
+        user_id = request.session.get('user-id', None)
+        if user_id and not change_user_data:
             return HttpResponseRedirect(reverse('sectionalignment:mapping'))
-        else:
-            form = UserForm()
+        form = UserForm()
 
     return render(request, template_name, {
         'form': form
@@ -35,12 +36,13 @@ def index(request, template_name):
 
 def mapping(request, template_name):
     # TODO: decorate
-    if 'mapper' not in request.session:
-        return HttpResponseRedirect(reverse('sectionalignment:index'))
-    try:
-        mapper = User.objects.get(id=request.session['mapper'])
-    except ObjectDoesNotExist:
-        del request.session['mapper']
+    user_id = request.session.get('user-id', None)
+    user = None
+    if user_id:
+        user = User.objects.filter(id=user_id).first()
+        if not user:
+            del request.session['user-id']
+    if not user:
         return HttpResponseRedirect(reverse('sectionalignment:index'))
 
     if request.method == 'POST':
@@ -80,19 +82,19 @@ def mapping(request, template_name):
             for lang, values in mappings.items()
         }
 
-        new_mapping = UserMapping(mapper=mapper,
-                              source=section,
-                              mappings=json.dumps(mappings, ensure_ascii=False))
+        new_mapping = UserMapping(mapper=user,
+                                  source=section,
+                                  mappings=json.dumps(mappings, ensure_ascii=False))
         new_mapping.save()
         return HttpResponseRedirect(reverse('sectionalignment:mapping'))
     else:
-        source_language = mapper.get_source_language()
-        target_languages = mapper.get_target_languages()
+        source_language = user.get_source_language()
+        target_languages = user.get_target_languages()
         if not source_language or not target_languages:
             return HttpResponse(
                 "Sorry, we don't have any data for you at this time.")
 
-        user_mappings = UserMapping.objects.filter(mapper=mapper)\
+        user_mappings = UserMapping.objects.filter(mapper=user)\
                                            .values("source__id")
         mapping_summary = UserMappingSummary.objects .filter(
             source__section_language=source_language
@@ -117,7 +119,7 @@ def mapping(request, template_name):
         print(questions)
 
         return render(request, template_name, {
-            'mapper': mapper,
+            'user': user,
             'title': mapping_summary.source.section_title,
             'language': mapping_summary.source.section_language,
             'questions': questions

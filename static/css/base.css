@@ -6,3 +6,11 @@ header {
 header .project-name {
     font-weight: bold;
 }
+
+.field-wrapper {
+    padding: 5px 0;
+}
+
+footer {
+    margin-top: 100px;
+}

@@ -9,16 +9,20 @@
         <link rel="stylesheet" href="{% static "css/base.css" %}">
     </head>
     <body>
-        {% block header %}
         <header>
+            {% block header %}
             <a href="/" class="project-name">gapfinder tools</a>
             <span class="app-name">{% block appname %}{% endblock %}</span>
+            {% endblock %}
         </header>
-        {% endblock %}
 
-        {% block content %}
-        {% endblock %}
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
 
-        {% block footer %}{% endblock %}
+        <footer>
+            {% block footer %}{% endblock %}
+        </footer>
     </body>
 </html>

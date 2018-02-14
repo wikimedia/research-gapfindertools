@@ -53,16 +53,22 @@ class User(models.Model):
     """User info"""
     wiki_username = models.CharField("Wiki username", max_length=255)
     ar_proficiency = models.CharField(
+        "Arabic proficiency",
         blank=True, max_length=1, choices=LANGUAGE_PROFICIENCIES)
     en_proficiency = models.CharField(
+        "English proficiency",
         blank=True, max_length=1, choices=LANGUAGE_PROFICIENCIES)
     es_proficiency = models.CharField(
+        "Spanish proficiency",
         blank=True, max_length=1, choices=LANGUAGE_PROFICIENCIES)
     fr_proficiency = models.CharField(
+        "French proficiency",
         blank=True, max_length=1, choices=LANGUAGE_PROFICIENCIES)
     ja_proficiency = models.CharField(
+        "Japanese proficiency",
         blank=True, max_length=1, choices=LANGUAGE_PROFICIENCIES)
     ru_proficiency = models.CharField(
+        "Russian proficiency",
         blank=True, max_length=1, choices=LANGUAGE_PROFICIENCIES)
     created = models.DateTimeField(auto_now_add=True)
 
