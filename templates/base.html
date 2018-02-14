@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html class="no-js">
     <head>
@@ -5,12 +6,12 @@
         <title>{% block title %}gapfinder tools{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link rel="stylesheet" href="css/base.css">
+        <link rel="stylesheet" href="{% static "css/base.css" %}">
     </head>
     <body>
         {% block header %}
         <header>
-            <span class="project-name">gapfinder tools:</span>
+            <a href="/" class="project-name">gapfinder tools</a>
             <span class="app-name">{% block appname %}{% endblock %}</span>
         </header>
         {% endblock %}

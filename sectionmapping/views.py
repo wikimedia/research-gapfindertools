@@ -20,10 +20,10 @@ def index(request, template_name):
         if form.is_valid():
             new_mapper = form.save()
             request.session['mapper'] = new_mapper.id
-            return HttpResponseRedirect(reverse('map'))
+            return HttpResponseRedirect(reverse('sectionmapping:map'))
     else:
         if request.session.get('mapper'):
-            return HttpResponseRedirect(reverse('map'))
+            return HttpResponseRedirect(reverse('sectionmapping:map'))
         else:
             form = MapperForm()
 
@@ -82,7 +82,7 @@ def mapping(request, template_name):
                               source=section,
                               targets=json.dumps(targets, ensure_ascii=False))
         new_mapping.save()
-        return HttpResponseRedirect(reverse('map'))
+        return HttpResponseRedirect(reverse('sectionmapping:map'))
     else:
         source_language = mapper.get_source_language()
         target_languages = mapper.get_target_languages()
