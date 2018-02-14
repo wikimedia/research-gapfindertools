@@ -21,7 +21,7 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html')),
-    path('section-mapping/',
-         include('sectionmapping.urls', namespace="sectionmapping")),
+    path('section-alignment/',
+         include('sectionalignment.urls', namespace="sectionalignment")),
     path('admin/', admin.site.urls),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

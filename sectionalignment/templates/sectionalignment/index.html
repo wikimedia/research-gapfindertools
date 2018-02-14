@@ -1,10 +1,10 @@
-{% extends "sectionmapping/base.html" %}
+{% extends "sectionalignment/base.html" %}
 
 {% block title %}Welcome{% endblock %}
 
 {% block content %}
 
-<form action="{% url 'index' %}" method="post">
+<form action="{% url 'sectionalignment:index' %}" method="post">
     {% csrf_token %}
     {{ form.non_field_errors }}
 

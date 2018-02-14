@@ -31,7 +31,25 @@ LANGUAGE_PROFICIENCIES = (
 )
 
 
-class Mapper(models.Model):
+class ModelMapping(models.Model):
+    """Model generated mappings"""
+    section_title = models.TextField()
+    section_language = models.CharField(
+        choices=LANGUAGE_CHOICES, db_index=True, max_length=8
+    )
+    # lower section_rank = section appears more frequently
+    section_rank = models.PositiveIntegerField(db_index=True)
+    mappings = models.TextField(
+        "JSON dump of section mappings in multiple languages.")
+
+    class Meta:
+        unique_together = ('section_title', 'section_language')
+
+    def __str__(self):
+        return "%s: %s" % (self.section_language, self.section_title)
+
+
+class User(models.Model):
     """User info"""
     wiki_username = models.CharField("Wiki username", max_length=255)
     ar_proficiency = models.CharField(
@@ -49,9 +67,11 @@ class Mapper(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.wiki_username
+        return "%s (%s)" % (self.wiki_username, str(self.created))
 
     def get_source_language(self):
+        """Get user's highest proficiency language or None if it's less
+        than MIN_PROFICIENCY"""
         source_language = None
         source_proficiency = MIN_PROFICIENCY
         if self.ar_proficiency >= source_proficiency:
@@ -75,6 +95,8 @@ class Mapper(models.Model):
         return source_language
 
     def get_target_languages(self):
+        """Get user's non-source languages whose proficiencies are
+        higher than MIN_PROFICIENCY"""
         all_languages = set()
         if self.ar_proficiency >= MIN_PROFICIENCY:
             all_languages.add('ar')
@@ -95,29 +117,12 @@ class Mapper(models.Model):
         return list(all_languages)
 
 
-class Section(models.Model):
-    """Model generated mappings"""
-    title = models.TextField()
-    language = models.CharField(choices=LANGUAGE_CHOICES,
-                                db_index=True, max_length=8)
-    # lower rank = section appears more frequently
-    rank = models.PositiveIntegerField(db_index=True)
-    targets = models.TextField(
-        "JSON dump of section targets in multiple languages.")
-
-    class Meta:
-        unique_together = ('title', 'language')
-
-    def __str__(self):
-        return "%s: %s" % (self.language, self.title)
-
-
-class Mapping(models.Model):
+class UserMapping(models.Model):
     """User generated mappings"""
-    mapper = models.ForeignKey(Mapper, on_delete=models.CASCADE)
-    source = models.ForeignKey(Section, on_delete=models.CASCADE)
-    targets = models.TextField("JSON dump of section targets. "
-                               "Includes user defined targets.")
+    mapper = models.ForeignKey(User, on_delete=models.CASCADE)
+    source = models.ForeignKey(ModelMapping, on_delete=models.CASCADE)
+    mappings = models.TextField("JSON dump of user's section mappings. "
+                                "Includes user defined mappings.")
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -127,9 +132,9 @@ class Mapping(models.Model):
         return "%s: %s" % (self.mapper, self.source)
 
 
-class MappingSummary(models.Model):
+class UserMappingSummary(models.Model):
     """Used to query missing mappings"""
-    source = models.ForeignKey(Section, on_delete=models.CASCADE)
+    source = models.ForeignKey(ModelMapping, on_delete=models.CASCADE)
     ar_count = models.PositiveSmallIntegerField(default=0)
     en_count = models.PositiveSmallIntegerField(default=0)
     es_count = models.PositiveSmallIntegerField(default=0)
@@ -138,37 +143,43 @@ class MappingSummary(models.Model):
     ru_count = models.PositiveSmallIntegerField(default=0)
 
     class Meta:
-        ordering = ['source__rank', 'ar_count', 'en_count',
+        verbose_name_plural = "User mapping summaries"
+        ordering = ['source__section_rank', 'ar_count', 'en_count',
                     'es_count', 'fr_count', 'ja_count', 'ru_count']
 
     def __str__(self):
-        return str(self.source)
+        return "%s — ar = %d, en = %d, es = %d, fr = %d, ja = %d, "\
+            "ru = %d" % (self.source, self.ar_count, self.en_count,
+                         self.es_count, self.fr_count, self.ja_count,
+                         self.ru_count)
 
 
-@receiver(post_save, sender=Section)
-def create_mapping_summary(sender, instance, **kwargs):
-    """Create mapping summary when a new section is created."""
+@receiver(post_save, sender=ModelMapping)
+def create_user_mapping_summary(sender, instance, **kwargs):
+    """Create user mapping summary when a new section is created."""
     if kwargs['created']:
-        new_mapping_summary = MappingSummary(source=instance)
+        new_mapping_summary = UserMappingSummary(source=instance)
         new_mapping_summary.save()
 
 
-@receiver(post_save, sender=Mapping)
-def update_mapping_summary(sender, instance, **kwargs):
-    """Update mapping summary when a new mapping is created."""
+@receiver(post_save, sender=UserMapping)
+def update_user_mapping_summary(sender, instance, **kwargs):
+    """Update user mapping summary when a new mapping is created."""
     if kwargs['created']:
-        mapping_summary = MappingSummary.objects.get(source=instance.source)
-        targets = json.loads(instance.targets)
-        if 'ar' in targets:
+        mapping_summary = UserMappingSummary.objects.get(
+            source=instance.source
+        )
+        mappings = json.loads(instance.mappings)
+        if 'ar' in mappings:
             mapping_summary.ar_count += 1
-        if 'en' in targets:
+        if 'en' in mappings:
             mapping_summary.en_count += 1
-        if 'es' in targets:
+        if 'es' in mappings:
             mapping_summary.es_count += 1
-        if 'fr' in targets:
+        if 'fr' in mappings:
             mapping_summary.fr_count += 1
-        if 'ja' in targets:
+        if 'ja' in mappings:
             mapping_summary.ja_count += 1
-        if 'ru' in targets:
+        if 'ru' in mappings:
             mapping_summary.ru_count += 1
         mapping_summary.save()

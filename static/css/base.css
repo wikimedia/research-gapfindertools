@@ -1,3 +1,8 @@
+header {
+    background-color: #b0e0e6;
+    margin-bottom: 10px;
+    padding: 10px;
+}
 header .project-name {
     font-weight: bold;
 }

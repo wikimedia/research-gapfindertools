@@ -1,12 +1,12 @@
-{% extends "sectionmapping/base.html" %}
+{% extends "sectionalignment/base.html" %}
 
-{% block title %}Map{% endblock %}
+{% block title %}Mapping{% endblock %}
 
 {% block content %}
 
 <h3>{{ title }}</h3>
 
-<form action="{% url 'sectionmapping:map' %}" method="post">
+<form action="{% url 'sectionalignment:mapping' %}" method="post">
     {% csrf_token %}
     <input type="hidden" name="title" value="{{ title }}" />
     <input type="hidden" name="language" value="{{ language }}" />
@@ -17,8 +17,8 @@
         <label for="{{ lang_code }}_select">Select an option</label>
         <select name="{{ lang_code }}" id="{{ lang_code }}_select">
             <option value="">---</option>
-            {% for target in data.targets %}
-            <option value="{{ target }}">{{ target }}</option>
+            {% for mapping in data.mappings %}
+            <option value="{{ mapping }}">{{ mapping }}</option>
             {% endfor %}
         </select>
         and/or

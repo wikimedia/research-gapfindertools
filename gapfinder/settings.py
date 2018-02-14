@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'sectionmapping.apps.SectionmappingConfig'
+    'sectionalignment.apps.SectionalignmentConfig'
 ]
 
 MIDDLEWARE = [
