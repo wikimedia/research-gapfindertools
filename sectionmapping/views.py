@@ -54,24 +54,29 @@ def mapping(request):
             return HttpResponseRedirect(reverse('index'))
 
         targets = {}
-        ar = request.POST.get('ar')
+        ar = request.POST.getlist('ar')
         if ar:
             targets['ar'] = ar
-        en = request.POST.get('en')
+        en = request.POST.getlist('en')
         if en:
             targets['en'] = en
-        es = request.POST.get('es')
+        es = request.POST.getlist('es')
         if es:
             targets['es'] = es
-        fr = request.POST.get('fr')
+        fr = request.POST.getlist('fr')
         if fr:
             targets['fr'] = fr
-        ja = request.POST.get('ja')
+        ja = request.POST.getlist('ja')
         if ja:
             targets['ja'] = ja
-        ru = request.POST.get('ru')
+        ru = request.POST.getlist('ru')
         if ru:
             targets['ru'] = ru
+
+        targets = {
+            lang: [value for value in values if value.strip()]
+            for lang, values in targets.items()
+        }
 
         new_mapping = Mapping(mapper=mapper,
                               source=section,

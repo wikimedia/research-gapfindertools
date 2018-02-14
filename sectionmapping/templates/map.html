@@ -13,13 +13,17 @@
 
     {% for lang_code, data in questions.items %}
     <div class="field-wrapper">
-        <label for="{{ lang_code }}">{{ data.language }}</label>
-        <select name="{{ lang_code }}">
+        <h4>{{ data.language }}</h4>
+        <label for="{{ lang_code }}_select">Select an option</label>
+        <select name="{{ lang_code }}" id="{{ lang_code }}_select">
             <option value="">---</option>
             {% for target in data.targets %}
             <option value="{{ target }}">{{ target }}</option>
             {% endfor %}
         </select>
+        and/or
+        <label for="{{ lang_code }}_input">Input your own</label>
+        <input type="text" name="{{ lang_code }}" id="{{ lang_code}}_input" value="" />
     </div>
     {% endfor %}
 
