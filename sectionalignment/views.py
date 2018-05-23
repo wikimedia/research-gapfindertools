@@ -1,126 +1,82 @@
-import json
-from random import shuffle
+from datetime import datetime
+# import json
+# from random import shuffle
+# import time
 
-from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User, UserMapping, ModelMapping, UserMappingSummary,\
-    LANGUAGE_CHOICES
-from .forms import UserForm
+from .models import Mapping, UserInput, LANGUAGE_CHOICES
 
 
 LANGUAGE_CHOICES_DICT = dict(LANGUAGE_CHOICES)
 
 
 def index(request, template_name):
-    # del request.session['user-id']
-    if request.method == 'POST':
-        form = UserForm(request.POST)
-        if form.is_valid():
-            new_user = form.save()
-            request.session['user-id'] = new_user.id
-            return HttpResponseRedirect(reverse('sectionalignment:mapping'))
-    else:
-        change_user_data = request.GET.get('change', None)
-        user_id = request.session.get('user-id', None)
-        if user_id and not change_user_data:
-            return HttpResponseRedirect(reverse('sectionalignment:mapping'))
-        form = UserForm()
+    # del request.session['user']
+    source = request.GET.get('s')
+    destination = request.GET.get('d')
+    change_user_data = request.GET.get('c')
 
-    return render(request, template_name, {
-        'form': form
-    })
+    if source in LANGUAGE_CHOICES_DICT and\
+       destination in LANGUAGE_CHOICES_DICT and\
+       source != destination:
+        request.session['user'] = {
+            'source': source,
+            'destination': destination
+        }
+        return HttpResponseRedirect(reverse('sectionalignment:mapping'))
+    elif request.session.get('user') and not change_user_data:
+        return HttpResponseRedirect(reverse('sectionalignment:mapping'))
+
+    return render(request, template_name)
 
 
 def mapping(request, template_name):
-    # TODO: decorate
-    user_id = request.session.get('user-id', None)
-    user = None
-    if user_id:
-        user = User.objects.filter(id=user_id).first()
-        if not user:
-            del request.session['user-id']
+    user = request.session.get('user')
     if not user:
         return HttpResponseRedirect(reverse('sectionalignment:index'))
 
-    if request.method == 'POST':
-        language = request.POST.get('language')
-        title = request.POST.get('title')
-        if not language or not title:
-            return HttpResponseRedirect(reverse('sectionalignment:index'))
-        section = ModelMapping.objects\
-                              .filter(section_language=language,
-                                      section_title=title)\
-                              .first()
-        if not section:
-            return HttpResponseRedirect(reverse('sectionalignment:index'))
+    question = request.session.get('question')
 
-        mappings = {}
-        ar = request.POST.getlist('ar')
-        if ar:
-            mappings['ar'] = ar
-        en = request.POST.getlist('en')
-        if en:
-            mappings['en'] = en
-        es = request.POST.getlist('es')
-        if es:
-            mappings['es'] = es
-        fr = request.POST.getlist('fr')
-        if fr:
-            mappings['fr'] = fr
-        ja = request.POST.getlist('ja')
-        if ja:
-            mappings['ja'] = ja
-        ru = request.POST.getlist('ru')
-        if ru:
-            mappings['ru'] = ru
-
-        mappings = {
-            lang: [value for value in values if value.strip()]
-            for lang, values in mappings.items()
-        }
-
-        new_mapping = UserMapping(mapper=user,
-                                  source=section,
-                                  mappings=json.dumps(mappings, ensure_ascii=False))
-        new_mapping.save()
+    if question and request.method == 'POST':
+        if 'skip' in request.POST:
+            user['skipped'].append(question['id'])
+        elif 'save' in request.POST:
+            pass
+            # mapping = Mapping.objects.get(pk=question['id'])
+        # save
         return HttpResponseRedirect(reverse('sectionalignment:mapping'))
     else:
-        source_language = user.get_source_language()
-        target_languages = user.get_target_languages()
-        if not source_language or not target_languages:
-            return HttpResponse(
-                "Sorry, we don't have any data for you at this time.")
+        # autocomplete suggestions
+        suggestions = Mapping.objects\
+                             .filter(language=user['destination'])\
+                             .values_list('title', flat=True)
 
-        user_mappings = UserMapping.objects.filter(mapper=user)\
-                                           .values("source__id")
-        mapping_summary = UserMappingSummary.objects .filter(
-            source__section_language=source_language
-        )
-        if user_mappings:
-            mapping_summary = mapping_summary\
-                              .exclude(source__id__in=user_mappings)
-        mapping_summary = mapping_summary.first()
+        user_input = None
+        # has the user refreshed the page?
+        if question:
+            user_input = UserInput.objects.filter(
+                id=question['id'],
+                done=False
+            ).first()
 
-        if not mapping_summary:
-            return HttpResponse("No data at this time.")
+        if not user_input:
+            user_input = UserInput.objects.filter(
+                source__language=user['source'],
+                destination_language=user['destination'],
+                done=False
+            ).order_by('source__rank').first()
 
-        mappings = json.loads(mapping_summary.source.mappings)
-        # TODO: make ordered dict
-        questions = {}
-        for lang_code in target_languages:
-            shuffle(mappings[lang_code])
-            questions[lang_code] = {
-                'language': LANGUAGE_CHOICES_DICT[lang_code],
-                'mappings': mappings[lang_code]
-            }
-        print(questions)
+        request.session['question'] = {
+            'id': user_input.id
+        }
 
         return render(request, template_name, {
+            'source_language': LANGUAGE_CHOICES_DICT[user['source']],
+            'destination_language': LANGUAGE_CHOICES_DICT[user['destination']],
             'user': user,
-            'title': mapping_summary.source.section_title,
-            'language': mapping_summary.source.section_language,
-            'questions': questions
+            'user_input': user_input,
+            'suggestions': list(suggestions)
         })

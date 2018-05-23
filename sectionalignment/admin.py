@@ -1,8 +1,6 @@
 from django.contrib import admin
 
-from .models import ModelMapping, User, UserMapping, UserMappingSummary
+from .models import Mapping, UserInput
 
-admin.site.register(ModelMapping)
-admin.site.register(User)
-admin.site.register(UserMapping)
-admin.site.register(UserMappingSummary)
+admin.site.register(Mapping)
+admin.site.register(UserInput)

@@ -1,37 +1,69 @@
 {% extends "sectionalignment/base.html" %}
+{% load static %}
 
 {% block title %}Mapping{% endblock %}
 
+{% block extra_styles %}
+<link rel="stylesheet" href="{% static "sectionalignment/css/mapping.css" %}">
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+var suggestions = {{ suggestions|safe }};
+</script>
+{% endblock %}
+
 {% block content %}
-
-<h3>{{ title }}</h3>
-
 <form action="{% url 'sectionalignment:mapping' %}" method="post">
     {% csrf_token %}
-    <input type="hidden" name="title" value="{{ title }}" />
-    <input type="hidden" name="language" value="{{ language }}" />
 
-    {% for lang_code, data in questions.items %}
-    <div class="field-wrapper">
-        <h4>{{ data.language }}</h4>
-        <label for="{{ lang_code }}_select">Select an option</label>
-        <select name="{{ lang_code }}" id="{{ lang_code }}_select">
-            <option value="">---</option>
-            {% for mapping in data.mappings %}
-            <option value="{{ mapping }}">{{ mapping }}</option>
-            {% endfor %}
-        </select>
-        and/or
-        <label for="{{ lang_code }}_input">Input your own</label>
-        <input type="text" name="{{ lang_code }}" id="{{ lang_code}}_input" value="" />
+    <p>
+        <b>Translate section titles to train our robots</b>
+        <p>Translate these section titles as you would expect to find them on
+            Wikipedia articles in your language. The more you translate the better
+            suggestions we'll be able to provide to editors in the future.</p>
+        <a href="">More instructions</a>
+    </p>
+
+    <div class="language-container">
+        <span class="source-language">
+            {{source_language}}
+        </span>
+        <span class="source-arrow"></span>
+        <span class="destination-language">
+            {{destination_language}}
+        </span>
     </div>
-    {% endfor %}
 
-    <input type="submit" value="Save & Next">
+    <div class="progress">
+        😎 5 translations completed!
+    </div>
+
+
+    <p>
+        <h6>Section to translate</h6>
+        <h3>{{ user_input.source.title }}</h3>
+        <a href="">View example</a>
+
+        <div>Your translation</div>
+
+        <input type="text" id="translation" name="translation">
+
+        <div>
+            <span id="add-more">+ Add an alternative translation.</span>
+        </div>
+
+        <div>
+            <input type="submit" name="skip" value="Skip this one">
+            <input type="submit" name="save" value="Submit translation">
+        </div>
+    </p>
 </form>
 
 {% endblock %}
 
 {% block footer %}
-<a href="{% url "sectionalignment:index" %}?change=1">Change user</a>
+<a href="{% url "sectionalignment:index" %}?c=1">
+    Change source and target languages
+</a>
 {% endblock %}

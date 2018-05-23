@@ -7,6 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="stylesheet" href="{% static "css/base.css" %}">
+        {% block extra_styles %}{% endblock %}
     </head>
     <body>
         <header>
@@ -24,5 +25,7 @@
         <footer>
             {% block footer %}{% endblock %}
         </footer>
+
+        {% block extra_scripts %}{% endblock %}
     </body>
 </html>
