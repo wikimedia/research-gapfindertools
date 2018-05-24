@@ -18,8 +18,21 @@ from .models import Mapping, UserInput, LANGUAGE_CHOICES
 LANGUAGE_CHOICES_DICT = dict(LANGUAGE_CHOICES)
 
 
+def clear_user_session(request):
+    if 'user' in request.session:
+        del request.session['user']
+
+    if 'question' in request.session:
+        # free the question for others to answer
+        user_input = UserInput.objects.get(
+            id=request.session['question']['id']
+        )
+        user_input.start_time = datetime.now() - timedelta(minutes=10)
+        user_input.save()
+        del request.session['question']
+
+
 def index(request, template_name):
-    # del request.session['user']
     source = request.GET.get('s')
     destination = request.GET.get('d')
     change_user_data = request.GET.get('c')
@@ -27,6 +40,7 @@ def index(request, template_name):
     if source in LANGUAGE_CHOICES_DICT and\
        destination in LANGUAGE_CHOICES_DICT and\
        source != destination:
+        clear_user_session(request)
         request.session['user'] = {
             'source': source,
             'destination': destination,
@@ -34,6 +48,7 @@ def index(request, template_name):
         }
         return HttpResponseRedirect(reverse('sectionalignment:mapping'))
     elif request.session.get('user') and not change_user_data:
+        clear_user_session(request)
         return HttpResponseRedirect(reverse('sectionalignment:mapping'))
 
     return render(request, template_name)
