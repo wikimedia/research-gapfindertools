@@ -4,7 +4,7 @@
 # their question timestamp so other can take it
 
 from datetime import datetime, timedelta
-# import json
+import json
 # from random import shuffle
 # import time
 
@@ -59,20 +59,37 @@ def mapping(request, template_name):
     if not user:
         return HttpResponseRedirect(reverse('sectionalignment:index'))
 
+    print('POST')
+    print(request.POST)
+
     question = request.session.get('question')
     if question and request.method == 'POST':
         if 'skip' in request.POST:
             # use set instead of list
             user['skipped'].append(question['id'])
         elif 'save' in request.POST:
-            # TODO handle cases when this is already saved, skip maybe?
-            translation = request.POST.get('translation', '').strip()
-            if translation:
-                user_input = UserInput.objects.get(pk=question['id'])
-                user_input.destination_title = translation
-                user_input.done = True
-                user_input.save()
-                user['counter'] = user.get('counter', 0) + 1
+            translation = request.POST.getlist('translation', [])
+            translation_set = set()
+            for t in translation:
+                t = t.strip()
+                if t:
+                    translation_set.add(t)
+            # skip input if empty
+            if not len(translation_set):
+                user['skipped'].append(question['id'])
+            else:
+                if translation:
+                    user_input = UserInput.objects.get(pk=question['id'])
+                    # this should not happen, but in case data is already there
+                    if user_input.done:
+                        translation_set |= set(
+                            json.loads(user_input.destination_title or '')
+                        )
+                    user_input.destination_title = json.dumps(
+                        list(translation_set))
+                    user_input.done = True
+                    user_input.save()
+                    user['counter'] = user.get('counter', 0) + 1
         request.session['user'] = user
         request.session['question'] = None
         return HttpResponseRedirect(reverse('sectionalignment:mapping'))
@@ -86,9 +103,9 @@ def mapping(request, template_name):
         # has the user refreshed the page?
         if question:
             user_input = UserInput.objects.filter(
+                id=question['id'],
                 source__language=user['source'],
                 destination_language=user['destination'],
-                id=question['id'],
                 done=False
             ).first()
 
@@ -100,9 +117,9 @@ def mapping(request, template_name):
                 start_time__lt=datetime.now() - timedelta(minutes=5)
             ).exclude(id__in=user['skipped']).order_by('source__rank').first()
             # save start time so someone else doesn't take the same question
-            if user_input:
-                user_input.start_time = datetime.now()
-                user_input.save()
+        if user_input:
+            user_input.start_time = datetime.now()
+            user_input.save()
 
         request.session['question'] = {
             'id': user_input.id
