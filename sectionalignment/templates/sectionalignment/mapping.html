@@ -4,6 +4,7 @@
 {% block title %}Mapping{% endblock %}
 
 {% block extra_styles %}
+<link rel="stylesheet" href="{% static "css/easy-autocomplete.min.css" %}">
 <link rel="stylesheet" href="{% static "sectionalignment/css/mapping.css" %}">
 {% endblock %}
 
@@ -11,6 +12,9 @@
 <script>
 var suggestions = {{ suggestions|safe }};
 </script>
+
+<script src="{% static "js/jquery.easy-autocomplete.min.js" %}" ></script>
+<script src="{% static "sectionalignment/js/mapping.js" %}" ></script>
 {% endblock %}
 
 {% block content %}
@@ -51,8 +55,10 @@ var suggestions = {{ suggestions|safe }};
         <!-- <a href="">View example</a> -->
     </div>
     <div class="answer">
-        <div><label for="translation">Your translation</label></div>
-        <input type="text" id="translation" name="translation">
+        <div>Your translation</div>
+        <div class="translation-box">
+            <input type="text" class="translation" name="translation">
+        </div>
 
         <a id="add-more" href="#">+ Add an alternative translation</a>
 

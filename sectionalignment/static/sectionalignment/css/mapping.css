@@ -63,13 +63,23 @@
     margin-bottom: 0;
 }
 
-#translation {
-    border: 1px solid #CCC;
-    box-sizing: border-box;
-    font-weight: bold;
+.translation-box {
     margin: 10px 0;
-    padding: 10px;
-    width: 100%;
+}
+
+.translation {
+    // override easy complete styles
+    border: 1px solid #CCC !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    box-sizing: border-box !important;
+    font-weight: bold !important;
+    padding: 10px !important;
+    width: 100% !important;
+}
+
+.easy-autocomplete-container ul {
+    border-top-style: solid;
 }
 
 #add-more {
