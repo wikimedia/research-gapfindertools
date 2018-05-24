@@ -21,43 +21,46 @@ var suggestions = {{ suggestions|safe }};
         <b>Translate section titles to train our robots</b>
         <p>Translate these section titles as you would expect to find them on
             Wikipedia articles in your language. The more you translate the better
-            suggestions we'll be able to provide to editors in the future.</p>
-        <a href="">More instructions</a>
+            suggestions we'll be able to provide to editors in the future.
+            <br>
+            <a href="">More instructions</a>
+        </p>
+
     </p>
 
-    <div class="language-container">
-        <span class="source-language">
-            {{source_language}}
-        </span>
-        <span class="source-arrow"></span>
-        <span class="destination-language">
-            {{destination_language}}
-        </span>
+    <div class="language-progress-line">
+        <div class="language-container">
+            <span class="source-language">
+                {{source_language}}
+            </span>
+            <span class="source-arrow"></span>
+            <span class="destination-language">
+                {{destination_language}}
+            </span>
+        </div>
+        <div class="progress">
+            {% if user.counter > 4 %}
+            😎 {{ user.counter }} translations completed!
+            {% endif %}
+        </div>
     </div>
 
-    <div class="progress">
-        😎 5 translations completed!
+    <div class="question">
+        <b>Section to translate</b>
+        <h2>{{ user_input.source.title }}</h2>
+        <!-- <a href="">View example</a> -->
     </div>
-
-
-    <p>
-        <h6>Section to translate</h6>
-        <h3>{{ user_input.source.title }}</h3>
-        <a href="">View example</a>
-
-        <div>Your translation</div>
-
+    <div class="answer">
+        <div><label for="translation">Your translation</label></div>
         <input type="text" id="translation" name="translation">
 
-        <div>
-            <span id="add-more">+ Add an alternative translation.</span>
-        </div>
+        <a id="add-more" href="#">+ Add an alternative translation</a>
 
-        <div>
+        <div class="buttons">
             <input type="submit" name="skip" value="Skip this one">
             <input type="submit" name="save" value="Submit translation">
         </div>
-    </p>
+    </div>
 </form>
 
 {% endblock %}

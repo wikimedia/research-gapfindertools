@@ -1,10 +1,17 @@
+.language-progress-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .language-container {
     align-items: stretch;
     background-color: #FFF;
     border: 1px solid #CCC;
     display: flex;
     justify-content: flex-start;
-    max-width: 300px;
+    min-width: 300px;
+    max-width: 400px;
 }
 
 .source-language,
@@ -34,4 +41,57 @@
     height: 28px;
     margin-top: 5px;
     transform: rotate(-45deg);
+}
+
+.progress {
+    flex: 1;
+    text-align: right;
+}
+
+.question,
+.answer {
+    background-color: white;
+    padding: 30px;
+}
+
+.question {
+    background-color: white;
+    border-bottom: 1px solid #CCC;
+    margin-top: 20px;
+}
+.question h2 {
+    margin-bottom: 0;
+}
+
+#translation {
+    border: 1px solid #CCC;
+    box-sizing: border-box;
+    font-weight: bold;
+    margin: 10px 0;
+    padding: 10px;
+    width: 100%;
+}
+
+#add-more {
+    display: block;
+    margin: 10px 0;
+}
+
+.buttons {
+    margin-top: 30px;
+    text-align: right;
+}
+
+input[name=skip],
+input[name=save] {
+    background-color: #36c;
+    border: none;
+    color: #fff;
+    padding: 10px;
+}
+
+input[name=skip]:hover,
+input[name=save]:hover {
+    background-color: #447ff5;
+    cursor: pointer;
 }

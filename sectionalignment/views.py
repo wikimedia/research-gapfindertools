@@ -44,9 +44,11 @@ def mapping(request, template_name):
         if 'skip' in request.POST:
             user['skipped'].append(question['id'])
         elif 'save' in request.POST:
+            user['counter'] = user.get('counter', 0) + 1
             pass
             # mapping = Mapping.objects.get(pk=question['id'])
         # save
+        request.session['user'] = user
         return HttpResponseRedirect(reverse('sectionalignment:mapping'))
     else:
         # autocomplete suggestions
@@ -73,6 +75,8 @@ def mapping(request, template_name):
             'id': user_input.id
         }
 
+        user['counter'] = 5
+        request.session['user'] = user
         return render(request, template_name, {
             'source_language': LANGUAGE_CHOICES_DICT[user['source']],
             'destination_language': LANGUAGE_CHOICES_DICT[user['destination']],

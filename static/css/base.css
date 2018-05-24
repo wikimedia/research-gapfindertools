@@ -3,7 +3,8 @@ body {
 }
 
 header, main, footer {
-    max-width: 620px;
+    margin: 10px 30px;
+    max-width: 768px;
 }
 
 header {
@@ -21,4 +22,9 @@ header .project-name {
 
 footer {
     margin-top: 100px;
+}
+
+a {
+    color: #36c;
+    text-decoration: none;
 }
