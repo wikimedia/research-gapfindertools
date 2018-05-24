@@ -50,12 +50,12 @@ var suggestions = {{ suggestions|safe }};
     </div>
 
     {% if user_input %}
-    <div class="question">
+    <div class="question main-content">
         <b>Section to translate</b>
         <h2>{{ user_input.source.title }}</h2>
         <!-- <a href="">View example</a> -->
     </div>
-    <div class="answer">
+    <div class="answer main-content">
         <div>Your translation</div>
         <div class="translation-box">
             <input type="text" class="translation" name="translation">
@@ -69,7 +69,7 @@ var suggestions = {{ suggestions|safe }};
         </div>
     </div>
     {% else %}
-    <div class="question">
+    <div class="main-content">
         ✌ No more sections to map!
     </div>
     {% endif %}

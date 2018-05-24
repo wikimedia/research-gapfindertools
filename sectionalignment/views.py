@@ -1,3 +1,8 @@
+# TODO show error if source and destination languages are not valid
+# TODO show error if user input is empty and they didn't skip but saved it
+# TODO when user goes back to index, drop their question, and put back
+# their question timestamp so other can take it
+
 from datetime import datetime, timedelta
 # import json
 # from random import shuffle
@@ -66,6 +71,8 @@ def mapping(request, template_name):
         # has the user refreshed the page?
         if question:
             user_input = UserInput.objects.filter(
+                source__language=user['source'],
+                destination_language=user['destination'],
                 id=question['id'],
                 done=False
             ).first()

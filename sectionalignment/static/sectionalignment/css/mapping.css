@@ -48,12 +48,6 @@
     text-align: right;
 }
 
-.question,
-.answer {
-    background-color: white;
-    padding: 30px;
-}
-
 .question {
     background-color: white;
     border-bottom: 1px solid #CCC;
@@ -85,23 +79,4 @@
 #add-more {
     display: block;
     margin: 10px 0;
-}
-
-.buttons {
-    margin-top: 30px;
-    text-align: right;
-}
-
-input[name=skip],
-input[name=save] {
-    background-color: #36c;
-    border: none;
-    color: #fff;
-    padding: 10px;
-}
-
-input[name=skip]:hover,
-input[name=save]:hover {
-    background-color: #447ff5;
-    cursor: pointer;
 }
