@@ -49,6 +49,7 @@ var suggestions = {{ suggestions|safe }};
         </div>
     </div>
 
+    {% if user_input %}
     <div class="question">
         <b>Section to translate</b>
         <h2>{{ user_input.source.title }}</h2>
@@ -67,6 +68,11 @@ var suggestions = {{ suggestions|safe }};
             <input type="submit" name="save" value="Submit translation">
         </div>
     </div>
+    {% else %}
+    <div class="question">
+        ✌ No more sections to map!
+    </div>
+    {% endif %}
 </form>
 
 {% endblock %}

@@ -1,3 +1,6 @@
+# TODO don't save ru-ru, etc.
+# TODO make sure source entries are unique
+
 import csv
 
 from django.core.management.base import BaseCommand

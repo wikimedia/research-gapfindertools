@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 # import json
 # from random import shuffle
 # import time
@@ -24,7 +24,8 @@ def index(request, template_name):
        source != destination:
         request.session['user'] = {
             'source': source,
-            'destination': destination
+            'destination': destination,
+            'skipped': []
         }
         return HttpResponseRedirect(reverse('sectionalignment:mapping'))
     elif request.session.get('user') and not change_user_data:
@@ -39,16 +40,21 @@ def mapping(request, template_name):
         return HttpResponseRedirect(reverse('sectionalignment:index'))
 
     question = request.session.get('question')
-
     if question and request.method == 'POST':
         if 'skip' in request.POST:
+            # use set instead of list
             user['skipped'].append(question['id'])
         elif 'save' in request.POST:
-            user['counter'] = user.get('counter', 0) + 1
-            pass
-            # mapping = Mapping.objects.get(pk=question['id'])
-        # save
+            # TODO handle cases when this is already saved, skip maybe?
+            translation = request.POST.get('translation', '').strip()
+            if translation:
+                user_input = UserInput.objects.get(pk=question['id'])
+                user_input.destination_title = translation
+                user_input.done = True
+                user_input.save()
+                user['counter'] = user.get('counter', 0) + 1
         request.session['user'] = user
+        request.session['question'] = None
         return HttpResponseRedirect(reverse('sectionalignment:mapping'))
     else:
         # autocomplete suggestions
@@ -68,15 +74,25 @@ def mapping(request, template_name):
             user_input = UserInput.objects.filter(
                 source__language=user['source'],
                 destination_language=user['destination'],
-                done=False
-            ).order_by('source__rank').first()
+                done=False,
+                start_time__lt=datetime.now() - timedelta(minutes=5)
+            ).exclude(id__in=user['skipped']).order_by('source__rank').first()
+            # save start time so someone else doesn't take the same question
+            if user_input:
+                user_input.start_time = datetime.now()
+                user_input.save()
 
         request.session['question'] = {
             'id': user_input.id
         }
 
-        user['counter'] = 5
         request.session['user'] = user
+
+        print('user')
+        print(user)
+        print('question')
+        print(question)
+
         return render(request, template_name, {
             'source_language': LANGUAGE_CHOICES_DICT[user['source']],
             'destination_language': LANGUAGE_CHOICES_DICT[user['destination']],
