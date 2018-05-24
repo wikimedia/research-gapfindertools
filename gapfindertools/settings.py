@@ -123,3 +123,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, "public")
+
+# After this many minutes if a question doesn't receive an answer, then
+# it's made available for other users to answer.
+QUESTION_DROP_MINUTES = 3

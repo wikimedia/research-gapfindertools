@@ -24,6 +24,9 @@ class Mapping(models.Model):
     # lower section_rank = section appears more frequently
     rank = models.PositiveIntegerField(db_index=True)
 
+    class Meta:
+        unique_together = (("title", "language"),)
+
     def __str__(self):
         return "%s: %s" % (self.language, self.title)
 
@@ -46,3 +49,6 @@ class UserInput(models.Model):
         return "%s - %s: %s" % (self.source.language,
                                 self.destination_language,
                                 self.source.title)
+
+    class Meta:
+        unique_together = (("source", "destination_language"),)

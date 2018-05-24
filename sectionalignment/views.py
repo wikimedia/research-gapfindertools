@@ -8,7 +8,8 @@ import json
 # from random import shuffle
 # import time
 
-from django.http import HttpResponse, HttpResponseRedirect
+from django.conf import settings
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.views.decorators.http import require_GET, require_POST
@@ -104,7 +105,7 @@ def mapping(request, template_name):
     - If no user session is present, redirect to /index.
     - Else if the user refreshed the page, show the old question.
     - Else show a new question, but only if it hasn't been seen in the
-      last 5 minutes
+      last QUESTION_DROP_MINUTES minutes.
     - Then update the question's start_time to now(), and set session
       values.
     """
@@ -130,7 +131,8 @@ def mapping(request, template_name):
             source__language=user['source'],
             destination_language=user['destination'],
             done=False,
-            start_time__lt=datetime.now() - timedelta(minutes=5)
+            start_time__lt=datetime.now() - timedelta(
+                minutes=settings.QUESTION_DROP_MINUTES)
         ).exclude(id__in=user['skipped']).order_by('source__rank').first()
 
     # save start time so someone else doesn't take the same question
@@ -147,6 +149,7 @@ def mapping(request, template_name):
                          .filter(language=user['destination'])\
                          .values_list('title', flat=True)
 
+    print(user_input)
     return render(request, template_name, {
         'source_language': LANGUAGE_CHOICES_DICT[user['source']],
         'destination_language': LANGUAGE_CHOICES_DICT[user['destination']],

@@ -1,8 +1,7 @@
-# TODO don't save ru-ru, etc.
-# TODO make sure source entries are unique
-
+from datetime import datetime, timedelta
 import csv
 
+from django.conf import settings
 from django.core.management.base import BaseCommand
 from sectionalignment.models import Mapping, UserInput, LANGUAGE_CHOICES
 
@@ -15,7 +14,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         # TODO: update when data is line by line
-        print("Starting to import.")
+        print("Starting to import...")
         with open(options['tsv_filename'][0], 'r', encoding='utf-8') as infile:
             reader = csv.reader(infile, delimiter='\t', quotechar='"')
             for i, row in enumerate(reader):
@@ -59,9 +58,15 @@ class Command(BaseCommand):
             for mapping in mappings:
                 user_inputs = []
                 for lang in LANGUAGE_CHOICES:
+                    if lang[0] == mapping.language:
+                        continue
                     user_inputs.append(UserInput(
                         source=mapping,
-                        destination_language=lang[0]
+                        destination_language=lang[0],
+                        # So that questions appear immediately (because
+                        # the cut off time is QUESTION_DROP_MINUTES).
+                        start_time=datetime.now() - timedelta(
+                            minutes=(settings.QUESTION_DROP_MINUTES + 10))
                     ))
                 UserInput.objects.bulk_create(user_inputs)
 
