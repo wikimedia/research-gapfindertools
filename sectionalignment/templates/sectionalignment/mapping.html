@@ -18,7 +18,7 @@ var suggestions = {{ suggestions|safe }};
 {% endblock %}
 
 {% block content %}
-<form action="{% url 'sectionalignment:mapping' %}" method="post">
+<form action="{% url 'sectionalignment:save_mapping' %}" method="post">
     {% csrf_token %}
 
     <p>

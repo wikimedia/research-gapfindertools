@@ -10,5 +10,6 @@ urlpatterns = [
     }, name='index'),
     path('mapping', views.mapping, {
         "template_name": "sectionalignment/mapping.html"
-    }, name='mapping')
+    }, name='mapping'),
+    path('mapping/save', views.save_mapping, name='save_mapping')
 ]
