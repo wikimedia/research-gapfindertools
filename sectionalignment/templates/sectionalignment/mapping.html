@@ -1,84 +1,117 @@
 {% extends "sectionalignment/base.html" %}
 {% load static %}
 
-{% block title %}Mapping{% endblock %}
-
 {% block extra_styles %}
-<link rel="stylesheet" href="{% static "css/easy-autocomplete.min.css" %}">
 <link rel="stylesheet" href="{% static "sectionalignment/css/mapping.css" %}">
+<link rel="stylesheet" href="{% static "css/easy-autocomplete.min.css" %}">
 {% endblock %}
 
 {% block extra_scripts %}
 <script>
 var suggestions = {{ suggestions|safe }};
 </script>
-
 <script src="{% static "js/jquery.easy-autocomplete.min.js" %}" ></script>
 <script src="{% static "sectionalignment/js/mapping.js" %}" ></script>
 {% endblock %}
 
 {% block content %}
-<form action="{% url 'sectionalignment:save_mapping' %}" method="post">
-    {% csrf_token %}
-
-    <p>
+<div class="row">
+    <div class="col col-md-7">
         <b>Translate section titles to train our robots</b>
         <p>Translate these section titles as you would expect to find them on
             Wikipedia articles in your language. The more you translate the better
-            suggestions we'll be able to provide to editors in the future.
-            <br>
-            <a href="">More instructions</a>
-        </p>
+            suggestions we'll be able to provide to editors in the future.</p>
+        <!-- <br> -->
+        <!-- <a href="#">More instructions</a> -->
 
-    </p>
-
-    <div class="language-progress-line">
-        <div class="language-container">
-            <span class="source-language">
-                {{source_language}}
-            </span>
-            <span class="source-arrow"></span>
-            <span class="destination-language">
-                {{destination_language}}
-            </span>
-        </div>
-        <div class="progress">
-            {% if user.counter > 4 %}
-            😎 {{ user.counter }} translations completed!
-            {% endif %}
+        <div class="row">
+            <div class="col-md-7">
+                <div class="btn-group">
+                    <button type="button" id="source-language" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ source.title }}
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="source-language">
+                        {% for code, name in language_choices_dict.items %}
+                        <a class="dropdown-item"
+                           href="{% url "sectionalignment:index" %}?{% if code != destination.code %}s={{ code }}&d={{ destination.code }}{% else %}s={{ destination.code }}&d={{ source.code }}{% endif %}">
+                            {{name}}
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+                <span class="arrow-box"></span>
+                <div class="btn-group">
+                    <button type="button" id="destination-language" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ destination.title }}
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="destination-language">
+                        {% for code, name in language_choices_dict.items %}
+                        <a class="dropdown-item"
+                           href="{% url "sectionalignment:index" %}?{% if code != source.code %}s={{ source.code }}&d={{ code }}{% else %}s={{ destination.code }}&d={{ source.code }}{% endif %}">
+                            {{name}}
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5 text-right">
+                {% if user.progress > 4 %}
+                {% if user.progress > 100 %}
+                🤓
+                {% elif user.progress > 50 %}
+                😎
+                {% elif user.progress > 25 %}
+                😁
+                {% elif user.progress > 4 %}
+                😀
+                {% endif %}
+                {{ user.progress }} translations completed!
+                {% endif %}
+            </div>
         </div>
     </div>
+</div>
 
-    {% if user_input %}
-    <div class="question main-content">
-        <b>Section to translate</b>
-        <h2>{{ user_input.source.title }}</h2>
-        <!-- <a href="">View example</a> -->
-    </div>
-    <div class="answer main-content">
-        <div>Your translation</div>
-        <div class="translation-box">
-            <input type="text" class="translation" name="translation">
-        </div>
-
-        <a id="add-more" href="#">+ Add an alternative translation</a>
-
-        <div class="buttons">
-            <input type="submit" name="skip" value="Skip this one">
-            <input type="submit" name="save" value="Submit translation">
+{% if user_input %}
+<div class="row">
+    <div class="col col-md-7">
+        <div class="question main-content">
+            <b>Section to translate</b>
+            <h2>{{ user_input.source.title }}</h2>
+            <!-- <a href="">View example</a> -->
         </div>
     </div>
-    {% else %}
-    <div class="main-content">
-        ✌ No more sections to map!
+</div>
+<div class="row">
+    <div class="col col-md-7">
+        <form action="{% url 'sectionalignment:save_mapping' %}" method="post">
+            <div class="answer main-content form-group">
+                <div>Your translation</div>
+                {% csrf_token %}
+                <div class="translation-box">
+                    <input type="text" class="translation form-control" name="translation" autofocus>
+                </div>
+                <button id="add-more" type="button" class="btn btn-link">
+                    + Add an alternative translation
+                </button>
+                <div class="text-right">
+                    <!-- order is important, we want the save button to submit by default -->
+                    <button type="submit" class="btn btn-primary float-right" name="save">Submit translation</button>
+                    <button type="submit" class="btn btn-secondary" name="skip">Skip this one</button>&nbsp;
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </form>
     </div>
-    {% endif %}
-</form>
+</div>
+{% else %}
+<div class="row">
+    <div class="col col-md-7">
+        <div class="main-content">
+            ✌ No more sections to map!
+        </div>
+    </div>
+</div>
+{% endif %}
 
-{% endblock %}
-
-{% block footer %}
-<a href="{% url "sectionalignment:index" %}?c=1">
-    Change source and target languages
-</a>
 {% endblock %}

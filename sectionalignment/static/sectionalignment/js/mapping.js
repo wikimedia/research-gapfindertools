@@ -1,4 +1,6 @@
 $(function () {
+
+
     function setupAutocomplete($element, suggestions) {
         var options = {
 	        data: suggestions,

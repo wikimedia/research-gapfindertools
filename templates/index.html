@@ -1,8 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h3>Apps</h3>
-<ul>
-    <li><a href="{% url "sectionalignment:index" %}">section alignment</a></li>
-</ul>
+<div class="row">
+    <div class="col-md-7">
+        <h3>Apps</h3>
+        <ul>
+            <li><a href="{% url "sectionalignment:index" %}">section alignment</a></li>
+        </ul>
+    </div>
+</div>
 {% endblock %}

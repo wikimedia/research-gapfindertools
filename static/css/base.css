@@ -3,17 +3,13 @@ body {
 }
 
 header, main, footer {
-    margin: 10px 30px;
-    max-width: 768px;
+    margin: 10px 0 30px;
 }
 
 header {
-    /* background-color: #b0e0e6; */
-    /* margin-bottom: 10px; */
-    /* padding: 10px; */
 }
 header .project-name {
-    /* font-weight: bold; */
+    font-size: 1.5em;
 }
 
 .field-wrapper {
@@ -43,12 +39,7 @@ input[type=submit]:hover {
 
 .main-content {
     background-color: white;
-    padding: 30px;
-}
-
-.buttons {
-    margin-top: 30px;
-    text-align: right;
+    padding: 15px;
 }
 
 .error {
