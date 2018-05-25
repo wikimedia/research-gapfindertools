@@ -24,7 +24,7 @@
 .arrow-box {
 	background: #fff;
     display: inline-flex;
-    margin-left: -5px;
+    margin-left: -15px;
 	position: relative;
     z-index: 100;
     vertical-align: middle;
