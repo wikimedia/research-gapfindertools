@@ -43,7 +43,7 @@ class UserInput(models.Model):
     # When did the user see the question?
     # If this time is more than 5 mins old, then we can show this
     # question to someone else.
-    start_time = models.DateTimeField(auto_now_add=True)
+    start_time = models.DateTimeField()
 
     def __str__(self):
         return "%s - %s: %s" % (self.source.language,

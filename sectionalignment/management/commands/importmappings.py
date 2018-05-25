@@ -14,7 +14,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         # TODO: update when data is line by line
-        print("Starting to import...")
+        print("Started importing data ...")
         with open(options['tsv_filename'][0], 'r', encoding='utf-8') as infile:
             reader = csv.reader(infile, delimiter='\t', quotechar='"')
             for i, row in enumerate(reader):
