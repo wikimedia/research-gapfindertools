@@ -1,15 +1,8 @@
-# TODO show error if source and destination languages are not valid
-# TODO show error if user input is empty and they didn't skip but saved it
-# TODO when user goes back to index, drop their question, and put back
-# their question timestamp so other can take it
-
 from datetime import datetime, timedelta
 import json
-# from random import shuffle
-# import time
 
 from django.conf import settings
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.views.decorators.http import require_GET, require_POST

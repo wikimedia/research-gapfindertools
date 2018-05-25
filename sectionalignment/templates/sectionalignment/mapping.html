@@ -74,7 +74,14 @@ var suggestions = {{ suggestions|safe }};
 
 {% if user_input %}
 <div class="row">
-    <div class="col col-md-7">
+    <div class="col-md-7">
+        <br>
+        <div class="alert alert-danger error d-none" role="alert">
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-7">
         <div class="question main-content">
             <b>Section to translate</b>
             <h2>{{ user_input.source.title }}</h2>
@@ -83,7 +90,7 @@ var suggestions = {{ suggestions|safe }};
     </div>
 </div>
 <div class="row">
-    <div class="col col-md-7">
+    <div class="col-md-7">
         <form action="{% url 'sectionalignment:save_mapping' %}" method="post">
             <div class="answer main-content form-group">
                 <div>Your translation</div>
@@ -106,7 +113,7 @@ var suggestions = {{ suggestions|safe }};
 </div>
 {% else %}
 <div class="row">
-    <div class="col col-md-7">
+    <div class="col-md-7">
         <div class="main-content">
             ✌ No more sections to map!
         </div>
