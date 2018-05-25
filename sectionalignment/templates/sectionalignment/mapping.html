@@ -8,10 +8,11 @@
 
 {% block extra_scripts %}
 <script>
-var suggestions = {{ suggestions|safe }};
+GT.suggestions = {{ suggestions|safe }};
+GT.userProgress = {{ user.progess|default:0 }};
 </script>
-<script src="{% static "js/jquery.easy-autocomplete.min.js" %}" ></script>
-<script src="{% static "sectionalignment/js/mapping.js" %}" ></script>
+<script src="{% static "js/jquery.easy-autocomplete.min.js" %}"></script>
+<script src="{% static "sectionalignment/js/mapping.js" %}"></script>
 {% endblock %}
 
 {% block content %}

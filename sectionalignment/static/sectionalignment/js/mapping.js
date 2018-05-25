@@ -1,26 +1,36 @@
-$(function () {
-    function setupAutocomplete($element, suggestions) {
-        var options = {
-	        data: suggestions,
-            adjustWidth: false,
-            list: {
-		        match: {
-			        enabled: true
-		        }
-	        }
-        };
+(function ($, GT) {
+    $(function () {
+        var $translation = $('.translation');
 
-        $element.easyAutocomplete(options);
-    }
+        function setupAutocomplete($element, suggestions) {
+            var options = {
+	            data: suggestions,
+                adjustWidth: false,
+                list: {
+		            match: {
+			            enabled: true
+		            }
+	            }
+            };
 
-    setupAutocomplete($('.translation'), window.suggestions);
+            $element.easyAutocomplete(options);
+        }
 
-    $('body').on('click', '#add-more', function (event) {
-        var $newBox = $('<div class="translation-box"></div>')
-            .append('<input type="text" class="translation form-control" name="translation">');
+        setupAutocomplete($translation, GT.suggestions);
 
-        $newBox.insertBefore($(event.target));
-        setupAutocomplete($newBox.find('input'), window.suggestions);
-        event.preventDefault();
-    });
-} );
+        $translation.focus();
+
+        if (GT.userProgress > 0) {
+            $('html,body').animate({scrollTop: $translation.offset().top});
+        }
+
+        $('body').on('click', '#add-more', function (event) {
+            var $newBox = $('<div class="translation-box"></div>')
+                .append('<input type="text" class="translation form-control" name="translation">');
+
+            $newBox.insertBefore($(event.target));
+            setupAutocomplete($newBox.find('input'), GT.suggestions);
+            event.preventDefault();
+        });
+    } );
+}(window.jQuery, window.GT));
