@@ -1,50 +1,20 @@
 body {
-    background-color: #EAECF0;
+    background-color: #EAECF0 !important;
 }
 
 header, main, footer {
     margin: 10px 0 30px;
 }
 
-header {
-}
 header .project-name {
     font-size: 1.5em;
-}
-
-.field-wrapper {
-    padding: 5px 0;
 }
 
 footer {
     margin-top: 100px;
 }
 
-a {
-    color: #36c;
-    text-decoration: none;
-}
-
-input[type=submit] {
-    background-color: #36c;
-    border: none;
-    color: #fff;
-    padding: 10px;
-}
-
-input[type=submit]:hover {
-    background-color: #447ff5;
-    cursor: pointer;
-}
-
 .main-content {
     background-color: white;
     padding: 15px;
-}
-
-.error {
-    color: red;
-}
-.hidden {
-    display: none;
 }
