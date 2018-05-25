@@ -25,7 +25,7 @@ SECRET_KEY = '#)zbti_w!for_jack0xpefbi=&c@tsb2oua4j$e!djyhy&x9g7'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['gapfinder-tools.wmflabs.org']
+ALLOWED_HOSTS = ['127.0.0.1', 'gapfinder-tools.wmflabs.org']
 
 
 # Application definition
