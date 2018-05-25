@@ -44,6 +44,7 @@ class UserInput(models.Model):
     # If this time is more than 5 mins old, then we can show this
     # question to someone else.
     start_time = models.DateTimeField()
+    user_session_key = models.CharField(max_length=64, default='')
 
     def __str__(self):
         return "%s - %s: %s" % (self.source.language,

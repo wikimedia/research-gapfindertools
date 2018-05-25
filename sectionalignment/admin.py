@@ -6,7 +6,7 @@ admin.site.register(Mapping)
 
 
 class UserInputAdmin(admin.ModelAdmin):
-    search_fields = ['source__title']
+    search_fields = ['source__title', 'user_session_key']
 
 
 admin.site.register(UserInput, UserInputAdmin)

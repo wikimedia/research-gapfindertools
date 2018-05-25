@@ -151,6 +151,7 @@ def save_mapping(request):
             user_input.destination_title = json.dumps(
                 list(translation_set))
             user_input.done = True
+            user_input.user_session_key = request.session.session_key
             user_input.save()
             increase_user_session_progress(request)
 
@@ -203,6 +204,7 @@ def mapping(request, template_name):
     # save start time so someone else doesn't take the same question
     if user_input:
         user_input.start_time = datetime.now()
+        user_input.user_session_key = request.session.session_key
         user_input.save()
         set_user_session_question(request, user_input.id)
 
