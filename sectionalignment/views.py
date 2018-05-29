@@ -149,7 +149,7 @@ def save_mapping(request):
                     json.loads(user_input.destination_title or '')
                 )
             user_input.destination_title = json.dumps(
-                list(translation_set))
+                list(translation_set), ensure_ascii=False)
             user_input.done = True
             user_input.user_session_key = request.session.session_key
             user_input.save()
