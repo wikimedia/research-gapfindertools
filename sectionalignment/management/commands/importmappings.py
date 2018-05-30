@@ -1,8 +1,9 @@
-from datetime import datetime, timedelta
 import csv
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
+from django.utils import timezone
+
 from sectionalignment.models import Mapping, UserInput, LANGUAGE_CHOICES
 
 
@@ -65,7 +66,7 @@ class Command(BaseCommand):
                         destination_language=lang[0],
                         # So that questions appear immediately (because
                         # the cut off time is QUESTION_DROP_MINUTES).
-                        start_time=datetime.now() - timedelta(
+                        start_time=timezone.now() - timezone.timedelta(
                             minutes=(settings.QUESTION_DROP_MINUTES + 10))
                     ))
                 UserInput.objects.bulk_create(user_inputs)

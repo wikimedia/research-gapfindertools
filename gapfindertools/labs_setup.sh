@@ -6,10 +6,10 @@ cd /srv/gapfindertools
 virtualenv -p $(which python3) venv
 source venv/bin/activate
 pip install -r requirements.txt
-python manage.py migrate
-python manage.py importmappings data/section_mappings.tsv
+python manage.py migrate --settings=gapfindertools.settings_prod
+python manage.py importmappings data/section_mappings.tsv --settings=gapfindertools.settings_prod
 mkdir {public,media}
-python manage.py collectstatic
+python manage.py collectstatic --settings=gapfindertools.settings_prod
 deactivate
 exit
 sudo mkdir -p /var/log/uwsgi/app/
