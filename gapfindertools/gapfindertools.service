@@ -1,0 +1,16 @@
+[Unit]
+Description=gapfindertools service
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+ExecStart=/usr/local/bin/uwsgi --ini /srv/gapfindertoosl/gapfindertools/uwsgi.ini
+User=www-data
+Group=www-data
+Restart=always
+StandardError=syslog
+NotifyAccess=all
+KillSignal=SIGTERM
+
+[Install]
+WantedBy=multi-user.target
