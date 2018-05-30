@@ -17,7 +17,10 @@ from gapfindertools.settings_base import *
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+SECRET_KEY = os.environ.get(
+    'DJANGO_SECRET_KEY',
+    '#)zbti_w!for_jack0xpefbi=&c@tsb2oua4j$e!djyhy&x9g7'
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -44,6 +47,6 @@ WSGI_APPLICATION = 'gapfindertools.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'data/db.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, 'data/db.sqlite3')
     }
 }
