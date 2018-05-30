@@ -1,4 +1,4 @@
-sudo apt-get -y install nginx uwsgi uwsgi-plugin-python3
+sudo apt-get -y install nginx uwsgi uwsgi-plugin-python3 mariadb-client
 sudo chown -R www-data:www-data /srv/gapfindertools/
 sudo ln -s /srv/gapfindertools/gapfindertools/nginx.conf /etc/nginx/sites-enabled/gapfindertools.conf
 sudo su -s /bin/bash www-data
