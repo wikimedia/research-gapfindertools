@@ -5,6 +5,7 @@ virtualenv -p $(which python3) venv
 source venv/bin/activate
 pip install -r requirements.txt
 python manage.py migrate --settings=gapfindertools.settings_prod
+sudo chmod ugo+rxw data/db.sqlite3
 python manage.py importmappings data/section_mappings.tsv --settings=gapfindertools.settings_prod
 mkdir {public,media}
 python manage.py collectstatic --settings=gapfindertools.settings_prod
