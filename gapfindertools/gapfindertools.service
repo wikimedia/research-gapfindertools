@@ -3,14 +3,14 @@ Description=Gapfinder Tools
 After=syslog.target
 
 [Service]
-ExecStart=/usr/local/bin/uwsgi --enable-threads --ini /srv/gapfindertools/gapfindertools/uwsgi.ini
+ExecStart=/usr/bin/uwsgi --enable-threads --ini /srv/gapfindertools/gapfindertools/uwsgi.ini
+ExecStop=/usr/bin/uwsgi --stop /tmp/gapfindertools-master.pid
 User=www-data
 Group=www-data
-Restart=always
+#Restart=always
 StandardError=syslog
 NotifyAccess=all
 KillSignal=SIGTERM
 
 [Install]
 WantedBy=multi-user.target
-Alias=gapfindertools.service
