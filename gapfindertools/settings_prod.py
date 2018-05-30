@@ -36,7 +36,7 @@ DATABASES = {
         'HOST': 'tools.db.svc.eqiad.wmflabs',
         'NAME': 'u10570_gapfindertools',
         'OPTIONS': {
-           'read_default_file': '/etc/replica.my.cnf')
+           'read_default_file': '/etc/replica.my.cnf'
          }
     }
 }
