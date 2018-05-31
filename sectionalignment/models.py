@@ -1,3 +1,5 @@
+import hashlib
+
 from django.db import models
 # from django.db.models.signals import post_save
 # from django.dispatch import receiver
@@ -23,12 +25,19 @@ class Mapping(models.Model):
     )
     # lower section_rank = section appears more frequently
     rank = models.PositiveIntegerField(db_index=True)
+    # For indexing. MySQL has a limit on indexed column length.
+    title_sha256 = models.CharField(max_length=64)
 
     class Meta:
-        unique_together = (("title", "language"),)
+        unique_together = (("title_sha256", "language"),)
 
     def __str__(self):
         return "%s: %s" % (self.language, self.title)
+
+    def save(self, *args, **kwargs):
+        self.title_sha256 = hashlib.sha256(
+            self.title.encode('utf-8')).hexdigest()
+        super(Mapping, self).save(*args, **kwargs)
 
 
 class UserInput(models.Model):
