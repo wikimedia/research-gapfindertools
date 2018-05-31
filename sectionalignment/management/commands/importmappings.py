@@ -1,8 +1,9 @@
-import csv
+import json
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.utils import timezone
+from openpyxl import load_workbook
 
 from sectionalignment.models import Mapping, UserInput, LANGUAGE_CHOICES
 
@@ -11,64 +12,63 @@ class Command(BaseCommand):
     help = 'Imports model generated data into database'
 
     def add_arguments(self, parser):
-        parser.add_argument('tsv_filename', nargs=1, type=str)
+        parser.add_argument('workbook', nargs=1, type=str)
 
     def handle(self, *args, **options):
-        # TODO: update when data is line by line
         print("Started importing data ...")
-        with open(options['tsv_filename'][0], 'r', encoding='utf-8') as infile:
-            reader = csv.reader(infile, delimiter='\t', quotechar='"')
-            for i, row in enumerate(reader):
-                row = [x.strip() for x in row]
-                entries = []
-                if row[0]:
-                    entries.append(Mapping(
-                        title=row[0],
-                        language='ar',
-                        rank=i))
-                if row[1]:
-                    entries.append(Mapping(
-                        title=row[1],
-                        language='en',
-                        rank=i))
-                if row[2]:
-                    entries.append(Mapping(
-                        title=row[2],
-                        language='es',
-                        rank=i))
-                if row[3]:
-                    entries.append(Mapping(
-                        title=row[3],
-                        language='fr',
-                        rank=i))
-                if row[4]:
-                    entries.append(Mapping(
-                        title=row[4],
-                        language='ja',
-                        rank=i))
-                if row[5]:
-                    entries.append(Mapping(
-                        title=row[5],
-                        language='ru',
-                        rank=i))
+        workbook = load_workbook(options['workbook'][0])
+        for source_lang, _ in LANGUAGE_CHOICES:
+            for destination_lang, _ in LANGUAGE_CHOICES:
+                if source_lang == destination_lang:
+                    continue
+                # if source_lang != 'en' or destination_lang != 'es':
+                    # continue
+                sheet = workbook['%s%s' % (source_lang, destination_lang)]
+                for i, row in enumerate(sheet.rows):
+                    # print([x.value for x in row])
+                    # handle duplicates
+                    mapping = Mapping.objects.filter(
+                        title=str(row[0].value),
+                        language=source_lang,
+                    ).first()
+                    if not mapping:
+                        mapping = Mapping(
+                            title=str(row[0].value),
+                            language=source_lang,
+                            rank=i)
+                        mapping.save()
 
-                Mapping.objects.bulk_create(entries)
-
-            # pre-fill questions
-            mappings = Mapping.objects.all()
-            for mapping in mappings:
-                user_inputs = []
-                for lang in LANGUAGE_CHOICES:
-                    if lang[0] == mapping.language:
-                        continue
-                    user_inputs.append(UserInput(
+                    # update duplicates
+                    user_inputs_from_sheet = [str(x.value)
+                                              for x in row[1:] if x.value]
+                    user_input = UserInput.objects.filter(
                         source=mapping,
-                        destination_language=lang[0],
-                        # So that questions appear immediately (because
-                        # the cut off time is QUESTION_DROP_MINUTES).
-                        start_time=timezone.now() - timezone.timedelta(
-                            minutes=(settings.QUESTION_DROP_MINUTES + 10))
-                    ))
-                UserInput.objects.bulk_create(user_inputs)
-
-            self.stdout.write('Import done.')
+                        destination_language=destination_lang
+                    ).first()
+                    if user_input:
+                        if user_inputs_from_sheet:
+                            user_input.destination_title = json.dumps(
+                                user_inputs_from_sheet +
+                                json.loads(
+                                    user_input.destination_title
+                                )
+                            )
+                            user_input.done = True
+                            user_input.save()
+                    # otherwise create new
+                    else:
+                        user_input = UserInput(
+                            source=mapping,
+                            destination_language=destination_lang,
+                            destination_title=json.dumps(
+                                user_inputs_from_sheet),
+                            done=len(user_inputs_from_sheet) > 0,
+                            # So that questions appear immediately (because
+                            # the cut off time is QUESTION_DROP_MINUTES).
+                            start_time=timezone.now() - timezone.timedelta(
+                                minutes=(settings.QUESTION_DROP_MINUTES + 1))
+                        )
+                        user_input.save()
+                self.stdout.write(
+                    'Done with %s-%s.' % (source_lang, destination_lang))
+        self.stdout.write('Import done.')

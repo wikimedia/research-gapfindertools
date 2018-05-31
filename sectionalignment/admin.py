@@ -10,9 +10,23 @@ from .models import Mapping, UserInput
 admin.site.register(Mapping)
 
 
+def custom_titled_filter(title):
+    class Wrapper(admin.FieldListFilter):
+        def __new__(cls, *args, **kwargs):
+            instance = admin.FieldListFilter.create(*args, **kwargs)
+            instance.title = title
+            return instance
+    return Wrapper
+
+
 class UserInputAdmin(admin.ModelAdmin):
     actions = ['download_tsv']
-    list_filter = ['done', 'user_session_key']
+    list_filter = ['done',
+                   ('source__language',
+                    custom_titled_filter('Source language')),
+                   ('destination_language',
+                    custom_titled_filter('Destination language')),
+                   'user_session_key']
     search_fields = ['source__title']
 
     def download_tsv(self, request, queryset):
