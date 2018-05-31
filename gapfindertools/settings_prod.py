@@ -32,21 +32,21 @@ WSGI_APPLICATION = 'gapfindertools.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        # https://wikitech.wikimedia.org/wiki/Help:Toolforge/Database#User_databases
-        'HOST': 'tools.db.svc.eqiad.wmflabs',
-        'NAME': 'u10570_gapfindertools',
-        'OPTIONS': {
-           'read_default_file': '/etc/replica.my.cnf'
-         }
-    }
-}
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'data/db.sqlite3')
+#         'ENGINE': 'django.db.backends.mysql',
+#         # https://wikitech.wikimedia.org/wiki/Help:Toolforge/Database#User_databases
+#         'HOST': 'tools.db.svc.eqiad.wmflabs',
+#         'NAME': 'u10570_gapfindertools',
+#         'OPTIONS': {
+#            'read_default_file': '/etc/replica.my.cnf'
+#          }
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'data/db.sqlite3')
+    }
+}

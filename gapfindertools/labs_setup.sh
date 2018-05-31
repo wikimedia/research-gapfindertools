@@ -14,6 +14,7 @@ deactivate
 #sudo touch /var/log/uwsgi/app/gapfinder.log
 #sudo chown www-data:www-data /var/log/uwsgi/app/gapfinder.log
 sudo chown -R www-data:www-data /srv/gapfindertools/
+sudo chmod gou+rwx /srv/gapfindertools/data/db.sqlite3
 sudo cp /srv/gapfindertools/gapfindertools/gapfindertools.service /etc/systemd/system/multi-user.target.wants/
 sudo systemctl daemon-reload
 sudo systemctl enable gapfindertools.service
