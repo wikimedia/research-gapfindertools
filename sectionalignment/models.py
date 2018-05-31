@@ -6,12 +6,12 @@ from django.db import models
 
 
 LANGUAGE_CHOICES = (
-    ('ar', 'Arabic'),
+    ('ar', 'العربية'),
     ('en', 'English'),
-    ('es', 'Spanish'),
-    ('fr', 'French'),
-    ('ja', 'Japanese'),
-    ('ru', 'Russian')
+    ('es', 'Español'),
+    ('fr', 'Français'),
+    ('ja', '日本語'),
+    ('ru', 'Русский')
 )
 
 

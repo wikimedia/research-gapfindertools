@@ -120,7 +120,9 @@ def index(request, template_name):
     if user and not request.GET.get('c'):
         return HttpResponseRedirect(reverse('sectionalignment:mapping'))
 
-    return render(request, template_name)
+    return render(request, template_name, {
+        'languages': LANGUAGE_CHOICES_DICT
+    })
 
 
 @require_POST

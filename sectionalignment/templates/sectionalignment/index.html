@@ -25,12 +25,9 @@
                         <label for="s">Source Language</label>
                         <select id="s" name="s" class="form-control">
                             <option value="" selected="selected"></option>
-                            <option value="ar">arabic</option>
-                            <option value="en">english</option>
-                            <option value="es">spanish</option>
-                            <option value="fr">french</option>
-                            <option value="ja">japanese</option>
-                            <option value="ru">russian</option>
+                            {% for code, language in languages.items %}
+                            <option value="{{ code }}">{{ language }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                 </div>
@@ -39,12 +36,9 @@
                         <label for="d">Destination Language</label>
                         <select id="d" name="d" class="form-control">
                             <option value="" selected="selected"></option>
-                            <option value="ar">arabic</option>
-                            <option value="en">english</option>
-                            <option value="es">spanish</option>
-                            <option value="fr">french</option>
-                            <option value="ja">japanese</option>
-                            <option value="ru">russian</option>
+                            {% for code, language in languages.items %}
+                            <option value="{{ code }}">{{ language }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                 </div>
