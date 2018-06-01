@@ -51,7 +51,8 @@ class Command(BaseCommand):
                                 user_inputs_from_sheet +
                                 json.loads(
                                     user_input.destination_title
-                                )
+                                ),
+                                ensure_ascii=False
                             )
                             user_input.done = True
                             user_input.save()
@@ -61,7 +62,9 @@ class Command(BaseCommand):
                             source=mapping,
                             destination_language=destination_lang,
                             destination_title=json.dumps(
-                                user_inputs_from_sheet),
+                                user_inputs_from_sheet,
+                                ensure_ascii=False
+                            ),
                             done=len(user_inputs_from_sheet) > 0,
                             # So that questions appear immediately (because
                             # the cut off time is QUESTION_DROP_MINUTES).
