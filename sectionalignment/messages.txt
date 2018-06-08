@@ -1,0 +1,14 @@
+Section Alignment
+Please select languages to start translating section titles.
+Source Language
+Destination Language
+Start
+Translate section titles to train our robots
+Translate these section titles as you would expect to find them on Wikipedia articles in your language. If, depending on context, a section title can have multiple translations in your Wikipedia language, provide all translations. Use suggestions by auto-complete feature or write your own translation. If you don't know a translation or a translation doesn't exist, skip. The more you translate the better suggestions we'll be able to provide to editors in the future.
+{N} translations completed!
+Section to translate
+Your translation
+Add an alternative translation
+Submit translation
+Skip this one
+No more sections to map!
