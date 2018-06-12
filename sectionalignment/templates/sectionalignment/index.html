@@ -1,5 +1,6 @@
 {% extends "sectionalignment/base.html" %}
 {% load static %}
+{% load i18n %}
 
 {% block extra_scripts %}
 <script src="{% static "sectionalignment/js/index.js" %}" ></script>
@@ -13,7 +14,7 @@
                 <div class="row">
                     <div class="col">
                         <p>
-                            Please select languages to start translating section titles.
+                            {% trans "Please select languages to start translating section titles." %}
                         </p>
                         <div class="alert alert-danger error {% if not error_message %}d-none{% endif %}" role="alert">
                             {{ error_message }}
@@ -22,7 +23,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-md-7">
-                        <label for="s">Source Language</label>
+                        <label for="s">{% trans "Source Language" %}</label>
                         <select id="s" name="s" class="form-control">
                             <option value="" selected="selected"></option>
                             {% for code, language in languages.items %}
@@ -33,7 +34,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-md-7">
-                        <label for="d">Destination Language</label>
+                        <label for="d">{% trans "Destination Language" %}</label>
                         <select id="d" name="d" class="form-control">
                             <option value="" selected="selected"></option>
                             {% for code, language in languages.items %}
@@ -43,7 +44,7 @@
                     </div>
                 </div>
                 <div class="text-right">
-                    <button type="submit" class="btn btn-primary">Start</button>
+                    <button type="submit" class="btn btn-primary">{% trans "Start" %}</button>
                 </div>
             </form>
         </div>

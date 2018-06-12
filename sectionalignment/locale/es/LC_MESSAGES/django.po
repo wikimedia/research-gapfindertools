@@ -1,0 +1,97 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-06-12 16:43-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: sectionalignment/templates/sectionalignment/base.html:4
+msgid "Section Alignment"
+msgstr "Alinear Secciones"
+
+#: sectionalignment/templates/sectionalignment/base.html:9
+msgid "WikipediA Research"
+msgstr ""
+
+#: sectionalignment/templates/sectionalignment/index.html:17
+msgid "Please select languages to start translating section titles."
+msgstr ""
+"Por favor, seleccione los idiomas para empezar a traducir los títulos de las "
+"secciones."
+
+#: sectionalignment/templates/sectionalignment/index.html:26
+msgid "Source Language"
+msgstr "Idioma de origen"
+
+#: sectionalignment/templates/sectionalignment/index.html:37
+msgid "Destination Language"
+msgstr "Idioma de destino"
+
+#: sectionalignment/templates/sectionalignment/index.html:47
+msgid "Start"
+msgstr "Inicio"
+
+#. Translators: Call to action heading
+#: sectionalignment/templates/sectionalignment/mapping.html:24
+msgid "Translate section titles to train our robots"
+msgstr "Traduce títulos los de las secciones para entrenar a nuestros robots"
+
+#: sectionalignment/templates/sectionalignment/mapping.html:27
+msgid ""
+"Translate these section titles as you would expect to find them on Wikipedia "
+"articles in your language. If, depending on context, a section title can "
+"have multiple translations in your Wikipedia language, provide all "
+"translations. Use suggestions by auto-complete feature or write your own "
+"translation. If you don't know a translation or a translation doesn't exist, "
+"skip. The more you translate the better suggestions we'll be able to provide "
+"to editors in the future."
+msgstr ""
+"Traducir estos títulos de sección tal como esperarías encontrarlos en los "
+"artículos de la Wikipedia en tu idioma. Si, dependiendo del contexto, un "
+"título puede tener múltiples traducciones en tu idioma, proporciona todas "
+"las traducciones posibles. Usa el autocompletado o escribe tu propia "
+"traducción. Si no conoces una traducción o crees que no existe traducción "
+"posible, simplemente sáltala. Mientras más traduciones hagas, mejorarás las "
+"recomendaciones de secciones que podremos hacer en el futuro a nuestro "
+"editores."
+
+#: sectionalignment/templates/sectionalignment/mapping.html:73
+msgid "translations completed!"
+msgstr "¡Traducción completa!"
+
+#: sectionalignment/templates/sectionalignment/mapping.html:91
+msgid "Section to translate"
+msgstr "Sección para traducir"
+
+#: sectionalignment/templates/sectionalignment/mapping.html:101
+msgid "Your translation"
+msgstr "Tu traducción"
+
+#: sectionalignment/templates/sectionalignment/mapping.html:107
+msgid "+ Add an alternative translation"
+msgstr "+ Añadir una traducción alternativa"
+
+#: sectionalignment/templates/sectionalignment/mapping.html:111
+msgid "Submit translation"
+msgstr "Envía"
+
+#: sectionalignment/templates/sectionalignment/mapping.html:112
+msgid "Skip this one"
+msgstr "Saltar"
+
+#: sectionalignment/templates/sectionalignment/mapping.html:123
+msgid "✌ No more sections to map!"
+msgstr "✌ ¡No hay más secciones por traducir!"

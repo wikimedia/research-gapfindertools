@@ -8,3 +8,13 @@ Research apps for Gapfinder
    source /etc/profile
 3. Run /srv/gapfindertools/gapfindertools/labs_setup.sh
 
+## How to create translations
+1. cd sectionalignment
+2. django-admin makemessages -l fr  # or some other language code
+3. Edit sectionalignment/locale/fr/LC_MESSAGES/django.po
+4. django-admin compilemessages
+
+## How to edit translations
+0. Edit files in sectionalignment/locale/...
+1. cd sectionalignment
+2. django-admin compilemessages

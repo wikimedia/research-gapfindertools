@@ -1,4 +1,6 @@
 {% load static %}
+{% load i18n %}
+
 <!doctype html>
 <html class="no-js" lang="en">
     <head>
@@ -16,7 +18,7 @@
                 {% block header %}
                 <div class="row">
                     <div class="col">
-                        <a href="/" class="project-name">WikipediA Research</a>
+                        <a href="/" class="project-name">{% trans "WikipediA Research" %}</a>
                         <span class="app-name">{% block appname %}{% endblock %}</span>
                     </div>
                 </div>

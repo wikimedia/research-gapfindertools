@@ -5,6 +5,7 @@ from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.utils import translation
 from django.views.decorators.http import require_GET, require_POST
 
 from .models import Mapping, UserInput, LANGUAGE_CHOICES
@@ -30,6 +31,7 @@ def set_new_user_session(request, source=None, destination=None):
                 'question': None
             }
     request.session['user'] = user
+    request.session[translation.LANGUAGE_SESSION_KEY] = source
     request.session.modified = True
 
 
@@ -44,6 +46,7 @@ def set_user_session_languages(request, source, destination):
     user['source'] = source
     user['destination'] = destination
     request.session['user'] = user
+    request.session[translation.LANGUAGE_SESSION_KEY] = source
     request.session.modified = True
 
 

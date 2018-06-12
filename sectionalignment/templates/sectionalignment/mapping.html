@@ -1,5 +1,6 @@
 {% extends "sectionalignment/base.html" %}
 {% load static %}
+{% load i18n %}
 
 {% block extra_styles %}
 <link rel="stylesheet" href="{% static "sectionalignment/css/mapping.css" %}">
@@ -18,17 +19,12 @@ GT.userProgress = {{ user.progess|default:0 }};
 {% block content %}
 <div class="row">
     <div class="col-md-9 col-lg-7">
-        <b>Translate section titles to train our robots</b>
+        <b>
+            {# Translators: Call to action heading #}
+            {% trans "Translate section titles to train our robots" %}
+        </b>
         <p>
-            Translate these section titles as you would expect to find
-            them on Wikipedia articles in your language. If, depending
-            on context, a section title can have multiple translations
-            in your Wikipedia language, provide all translations. Use
-            suggestions by auto-complete feature or write your own
-            translation. If you don't know a translation or a
-            translation doesn't exist, skip. The more you translate the
-            better suggestions we'll be able to provide to editors in
-            the future.
+            {% trans "Translate these section titles as you would expect to find them on Wikipedia articles in your language. If, depending on context, a section title can have multiple translations in your Wikipedia language, provide all translations. Use suggestions by auto-complete feature or write your own translation. If you don't know a translation or a translation doesn't exist, skip. The more you translate the better suggestions we'll be able to provide to editors in the future." %}
         </p>
         <!-- <br> -->
         <!-- <a href="#">More instructions</a> -->
@@ -74,7 +70,7 @@ GT.userProgress = {{ user.progess|default:0 }};
                 {% elif user.progress > 4 %}
                 😀
                 {% endif %}
-                {{ user.progress }} translations completed!
+                {{ user.progress }} {% trans "translations completed!" %}
                 {% endif %}
             </div>
         </div>
@@ -92,7 +88,7 @@ GT.userProgress = {{ user.progess|default:0 }};
 <div class="row">
     <div class="col-md-9 col-lg-7">
         <div class="question main-content">
-            <b>Section to translate</b>
+            <b>{% trans "Section to translate" %}</b>
             <h2>{{ user_input.source.title }}</h2>
             <!-- <a href="">View example</a> -->
         </div>
@@ -102,18 +98,18 @@ GT.userProgress = {{ user.progess|default:0 }};
     <div class="col-md-9 col-lg-7">
         <form action="{% url 'sectionalignment:save_mapping' %}" method="post">
             <div class="answer main-content form-group">
-                <div>Your translation</div>
+                <div>{% trans "Your translation" %}</div>
                 {% csrf_token %}
                 <div class="translation-box">
                     <input type="text" class="translation form-control" name="translation" autofocus>
                 </div>
                 <button id="add-more" type="button" class="btn btn-link">
-                    + Add an alternative translation
+                    {% trans "+ Add an alternative translation" %}
                 </button>
                 <div class="text-right">
                     <!-- order is important, we want the save button to submit by default -->
-                    <button type="submit" class="btn btn-primary float-right" name="save">Submit translation</button>
-                    <button type="submit" class="btn btn-secondary" name="skip">Skip this one</button>&nbsp;
+                    <button type="submit" class="btn btn-primary float-right" name="save">{% trans "Submit translation" %}</button>
+                    <button type="submit" class="btn btn-secondary" name="skip">{% trans "Skip this one" %}</button>&nbsp;
                     <div class="clearfix"></div>
                 </div>
             </div>
@@ -124,7 +120,7 @@ GT.userProgress = {{ user.progess|default:0 }};
 <div class="row">
     <div class="col-md-9 col-lg-7">
         <div class="main-content">
-            ✌ No more sections to map!
+            {% trans "✌ No more sections to map!" %}
         </div>
     </div>
 </div>
