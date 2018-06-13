@@ -26,10 +26,12 @@
 
         $('body').on('click', '#add-more', function (event) {
             var $newBox = $('<div class="translation-box"></div>')
-                .append('<input type="text" class="translation form-control" name="translation">');
+                .append('<input type="text" class="translation form-control" name="translation">'),
+                $input = $newBox.find('input');
 
             $newBox.insertBefore($(event.target));
-            setupAutocomplete($newBox.find('input'), GT.suggestions);
+            setupAutocomplete($input, GT.suggestions);
+            $input.focus();
             event.preventDefault();
         });
     } );
