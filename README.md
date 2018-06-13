@@ -18,3 +18,6 @@ Research apps for Gapfinder
 0. Edit files in sectionalignment/locale/...
 1. cd sectionalignment
 2. django-admin compilemessages
+
+## TODO
+1. Auto reload UWSGI after pulling new changes to the production server.
