@@ -24,6 +24,7 @@ GT.userProgress = {{ user.progess|default:0 }};
             {% trans "Translate section titles to train our robots" %}
         </b>
         <p>
+            {# Translators: Explanation of the task to translators #}
             {% trans "Translate these section titles as you would expect to find them on Wikipedia articles in your language. If, depending on context, a section title can have multiple translations in your Wikipedia language, provide all translations. Use suggestions by auto-complete feature or write your own translation. If you don't know a translation or a translation doesn't exist, skip. The more you translate the better suggestions we'll be able to provide to editors in the future." %}
         </p>
         <!-- <br> -->
@@ -70,7 +71,9 @@ GT.userProgress = {{ user.progess|default:0 }};
                 {% elif user.progress > 4 %}
                 😀
                 {% endif %}
-                {{ user.progress }} {% trans "translations completed!" %}
+                {{ user.progress }}
+                {# Translators: Message indicating progress. A number precedes this message. #}
+                {% trans "translations completed!" %}
                 {% endif %}
             </div>
         </div>
@@ -88,7 +91,10 @@ GT.userProgress = {{ user.progess|default:0 }};
 <div class="row">
     <div class="col-md-9 col-lg-7">
         <div class="question main-content">
-            <b>{% trans "Section to translate" %}</b>
+            <b>
+                {# Translators: Label for the section title in source language #}
+                {% trans "Section to translate" %}
+            </b>
             <h2>{{ user_input.source.title }}</h2>
             <!-- <a href="">View example</a> -->
         </div>
@@ -98,18 +104,28 @@ GT.userProgress = {{ user.progess|default:0 }};
     <div class="col-md-9 col-lg-7">
         <form action="{% url 'sectionalignment:save_mapping' %}" method="post">
             <div class="answer main-content form-group">
-                <div>{% trans "Your translation" %}</div>
+                <div>
+                    {# Translators: Label for the input in destination language #}
+                    {% trans "Your translation" %}
+                </div>
                 {% csrf_token %}
                 <div class="translation-box">
                     <input type="text" class="translation form-control" name="translation" autofocus>
                 </div>
                 <button id="add-more" type="button" class="btn btn-link">
+                    {# Translators: Button label #}
                     {% trans "+ Add an alternative translation" %}
                 </button>
                 <div class="text-right">
                     <!-- order is important, we want the save button to submit by default -->
-                    <button type="submit" class="btn btn-primary float-right" name="save">{% trans "Submit translation" %}</button>
-                    <button type="submit" class="btn btn-secondary" name="skip">{% trans "Skip this one" %}</button>&nbsp;
+                    <button type="submit" class="btn btn-primary float-right" name="save">
+                        {# Translators: Button label #}
+                        {% trans "Submit translation" %}
+                    </button>
+                    <button type="submit" class="btn btn-secondary" name="skip">
+                        {# Translators: Button label #}
+                        {% trans "Skip this one" %}
+                    </button>&nbsp;
                     <div class="clearfix"></div>
                 </div>
             </div>
@@ -120,6 +136,7 @@ GT.userProgress = {{ user.progess|default:0 }};
 <div class="row">
     <div class="col-md-9 col-lg-7">
         <div class="main-content">
+            {# Translators: Message shown when all translation tasks are complete. #}
             {% trans "✌ No more sections to map!" %}
         </div>
     </div>

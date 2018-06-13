@@ -18,7 +18,10 @@
                 {% block header %}
                 <div class="row">
                     <div class="col">
-                        <a href="/" class="project-name">{% trans "WikipediA Research" %}</a>
+                        <a href="/" class="project-name">
+                            {# Translators: Site branding #}
+                            {% trans "WikipediA Research" %}
+                        </a>
                         <span class="app-name">{% block appname %}{% endblock %}</span>
                     </div>
                 </div>
