@@ -31,7 +31,7 @@ def set_new_user_session(request, source=None, destination=None):
                 'question': None
             }
     request.session['user'] = user
-    request.session[translation.LANGUAGE_SESSION_KEY] = source
+    request.session[translation.LANGUAGE_SESSION_KEY] = destination
     request.session.modified = True
 
 
@@ -46,7 +46,7 @@ def set_user_session_languages(request, source, destination):
     user['source'] = source
     user['destination'] = destination
     request.session['user'] = user
-    request.session[translation.LANGUAGE_SESSION_KEY] = source
+    request.session[translation.LANGUAGE_SESSION_KEY] = destination
     request.session.modified = True
 
 
