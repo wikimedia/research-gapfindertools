@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-12 16:43-0400\n"
+"POT-Creation-Date: 2018-06-14 11:46-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,15 +20,17 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: templates/base.html:21
+#. Translators: Site branding
+#: templates/base.html:23
 msgid "WikipediA Research"
 msgstr ""
 
-#: templates/index.html:8
+#. Translators: Header for the list of apps supported by Gapfindertools
+#: templates/index.html:10
 msgid "Apps"
 msgstr ""
 
-#: templates/index.html:10
+#: templates/index.html:13
 msgid "section alignment"
 msgstr ""
 

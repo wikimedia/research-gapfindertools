@@ -71,9 +71,8 @@ GT.userProgress = {{ user.progess|default:0 }};
                 {% elif user.progress > 4 %}
                 😀
                 {% endif %}
-                {{ user.progress }}
-                {# Translators: Message indicating progress. A number precedes this message. #}
-                {% trans "translations completed!" %}
+                {# Translators: Message indicating progress. N is the number of translations completed by the user. N is always bigger than 4.#}
+                {% blocktrans with N=user.progress %}{{ N }} translations completed!{% endblocktrans %}
                 {% endif %}
             </div>
         </div>
