@@ -1,15 +1,21 @@
 {% load static %}
 {% load i18n %}
-
-<!doctype html>
-<html class="no-js" lang="en">
+{% get_current_language as LANGUAGE_CODE %}
+{% get_current_language_bidi as LANGUAGE_BIDI %}
+<!DOCTYPE html>
+<html class="no-js" lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>{% block title %}gapfinder tools{% endblock %}</title>
 
+        {% if LANGUAGE_BIDI %}
+        <link rel="stylesheet" href="{% static "css/base_rts.css" %}">
+        <link rel="stylesheet" href="{% static "css/bootstrap.min_rtl.css" %}">
+        {% else %}
         <link rel="stylesheet" href="{% static "css/base.css" %}">
         <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}">
+        {% endif %}
         {% block extra_styles %}{% endblock %}
     </head>
     <body>

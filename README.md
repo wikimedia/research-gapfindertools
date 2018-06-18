@@ -12,6 +12,13 @@ Research apps for Gapfinder
    - cd /srv/gapfindertools
    - sudo venv/bin/python manage.py collectstatic --settings=gapfindertools.settings_prod
 
+## Generating CSS for RTL languages
+0. `sudo npm install -g rtlcss`
+1. For each style sheet, generate a new one for RTL languages like so:
+   `rtlcss base.css base_rtl.css`
+2. Note to only change non-RTL stylesheets and generate RTL ones from
+   those.
+
 ## How to create translations
 1. cd sectionalignment
 2. django-admin makemessages -l fr  # or some other language code

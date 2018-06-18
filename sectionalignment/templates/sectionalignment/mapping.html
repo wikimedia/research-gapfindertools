@@ -1,10 +1,17 @@
 {% extends "sectionalignment/base.html" %}
 {% load static %}
 {% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% get_current_language_bidi as LANGUAGE_BIDI %}
 
 {% block extra_styles %}
+{% if LANGUAGE_BIDI %}
+<link rel="stylesheet" href="{% static "sectionalignment/css/mapping_rtl.css" %}">
+<link rel="stylesheet" href="{% static "css/easy-autocomplete.min_rtl.css" %}">
+{% else %}
 <link rel="stylesheet" href="{% static "sectionalignment/css/mapping.css" %}">
 <link rel="stylesheet" href="{% static "css/easy-autocomplete.min.css" %}">
+{% endif %}
 {% endblock %}
 
 {% block extra_scripts %}
