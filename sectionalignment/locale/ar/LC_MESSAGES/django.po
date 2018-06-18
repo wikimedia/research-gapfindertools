@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-15 12:53-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2018-06-18 14:14-0400\n"
+"PO-Revision-Date: 2018-06-18 14:13-0400\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -20,42 +20,42 @@ msgstr ""
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
 #. Translators: Name of the window title
-#: templates/sectionalignment/base.html:6
+#: sectionalignment/templates/sectionalignment/base.html:6
 msgid "Section Alignment"
-msgstr ""
+msgstr "تقسيم الأجزاء"
 
 #. Translators: Site branding
-#: templates/sectionalignment/base.html:14
+#: sectionalignment/templates/sectionalignment/base.html:14
 msgid "WikipediA Research"
 msgstr ""
 
 #. Translators: Call to action
-#: templates/sectionalignment/index.html:18
+#: sectionalignment/templates/sectionalignment/index.html:18
 msgid "Please select languages to start translating section titles."
-msgstr ""
+msgstr "يرجى تحديد اللغات لبدء ترجمة عناوين الأقسام."
 
 #. Translators: Language to translate section titles from
-#: templates/sectionalignment/index.html:29
+#: sectionalignment/templates/sectionalignment/index.html:29
 msgid "Source Language"
-msgstr ""
+msgstr "لغة المصدر"
 
 #. Translators: Language to translate section titles to
-#: templates/sectionalignment/index.html:43
+#: sectionalignment/templates/sectionalignment/index.html:43
 msgid "Destination Language"
-msgstr ""
+msgstr "لغة الوجهة"
 
 #. Translators: Label of the button that takes the user to the mapping page
-#: templates/sectionalignment/index.html:56
+#: sectionalignment/templates/sectionalignment/index.html:56
 msgid "Start"
-msgstr ""
+msgstr "البدء"
 
 #. Translators: Call to action heading
-#: templates/sectionalignment/mapping.html:24
+#: sectionalignment/templates/sectionalignment/mapping.html:24
 msgid "Translate section titles to train our robots"
-msgstr ""
+msgstr "ترجمة عناوين القسم لتدريب الروبوتات لدينا"
 
 #. Translators: Explanation of the task to translators
-#: templates/sectionalignment/mapping.html:28
+#: sectionalignment/templates/sectionalignment/mapping.html:28
 msgid ""
 "Translate these section titles as you would expect to find them on Wikipedia "
 "articles in your language. If, depending on context, a section title can "
@@ -65,39 +65,45 @@ msgid ""
 "skip. The more you translate the better suggestions we'll be able to provide "
 "to editors in the future."
 msgstr ""
+"ترجمة عناوين هذه الأقسام كما تتوقع العثور عليها في مقالات ويكيبيديا بلغتك. "
+"إذا كان بالإمكان ، استنادًا إلى السياق ، أن يكون عنوان القسم له ترجمات متعددة "
+"في لغة Wikipedia الخاصة بك ، قدم جميع الترجمات. استخدم الاقتراحات عن طريق "
+"ميزة الإكمال التلقائي أو اكتب الترجمة الخاصة بك. إذا كنت لا تعرف ترجمة أو "
+"ترجمة غير موجودة ، فتخطها. كلما زادت ترجمة الاقتراحات الأفضل التي سنتمكن من "
+"تقديمها إلى المحررين في المستقبل."
 
 #. Translators: Message indicating progress. N is the number of translations completed by the user. N is always bigger than 4.
-#: templates/sectionalignment/mapping.html:75
+#: sectionalignment/templates/sectionalignment/mapping.html:75
 #, python-format
 msgid "%(N)s translations completed!"
-msgstr ""
+msgstr "%(N)s من الترجمات مكتملة!"
 
 #. Translators: Label for the section title in source language
-#: templates/sectionalignment/mapping.html:95
+#: sectionalignment/templates/sectionalignment/mapping.html:95
 msgid "Section to translate"
-msgstr ""
+msgstr "المقطع الى الترجمة"
 
 #. Translators: Label for the input in destination language
-#: templates/sectionalignment/mapping.html:108
+#: sectionalignment/templates/sectionalignment/mapping.html:108
 msgid "Your translation"
-msgstr ""
+msgstr "ترجماتك"
 
 #. Translators: Button label
-#: templates/sectionalignment/mapping.html:116
+#: sectionalignment/templates/sectionalignment/mapping.html:116
 msgid "+ Add an alternative translation"
-msgstr ""
+msgstr "أضف ترجمة بديلة"
 
 #. Translators: Button label
-#: templates/sectionalignment/mapping.html:122
+#: sectionalignment/templates/sectionalignment/mapping.html:122
 msgid "Submit translation"
-msgstr ""
+msgstr "تقديم ترجمة"
 
 #. Translators: Button label
-#: templates/sectionalignment/mapping.html:126
+#: sectionalignment/templates/sectionalignment/mapping.html:126
 msgid "Skip this one"
-msgstr ""
+msgstr "تخطى هذه"
 
 #. Translators: Message shown when all translation tasks are complete.
-#: templates/sectionalignment/mapping.html:139
+#: sectionalignment/templates/sectionalignment/mapping.html:139
 msgid "✌ No more sections to map!"
-msgstr ""
+msgstr "لا يوجد المزيد من عناوين الأقسام لترجمتها!"

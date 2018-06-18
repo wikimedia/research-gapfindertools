@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-15 12:53-0400\n"
+"POT-Creation-Date: 2018-06-18 14:14-0400\n"
 "PO-Revision-Date: 2018-06-15 12:53-0400\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,44 +19,44 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. Translators: Name of the window title
-#: templates/sectionalignment/base.html:6
+#: sectionalignment/templates/sectionalignment/base.html:6
 msgid "Section Alignment"
 msgstr "Alinear Secciones"
 
 #. Translators: Site branding
-#: templates/sectionalignment/base.html:14
+#: sectionalignment/templates/sectionalignment/base.html:14
 msgid "WikipediA Research"
 msgstr ""
 
 #. Translators: Call to action
-#: templates/sectionalignment/index.html:18
+#: sectionalignment/templates/sectionalignment/index.html:18
 msgid "Please select languages to start translating section titles."
 msgstr ""
 "Por favor, seleccione los idiomas para empezar a traducir los títulos de las "
 "secciones."
 
 #. Translators: Language to translate section titles from
-#: templates/sectionalignment/index.html:29
+#: sectionalignment/templates/sectionalignment/index.html:29
 msgid "Source Language"
 msgstr "Idioma de origen"
 
 #. Translators: Language to translate section titles to
-#: templates/sectionalignment/index.html:43
+#: sectionalignment/templates/sectionalignment/index.html:43
 msgid "Destination Language"
 msgstr "Idioma de destino"
 
 #. Translators: Label of the button that takes the user to the mapping page
-#: templates/sectionalignment/index.html:56
+#: sectionalignment/templates/sectionalignment/index.html:56
 msgid "Start"
 msgstr "Inicio"
 
 #. Translators: Call to action heading
-#: templates/sectionalignment/mapping.html:24
+#: sectionalignment/templates/sectionalignment/mapping.html:24
 msgid "Translate section titles to train our robots"
 msgstr "Traduce títulos los de las secciones para entrenar a nuestros robots"
 
 #. Translators: Explanation of the task to translators
-#: templates/sectionalignment/mapping.html:28
+#: sectionalignment/templates/sectionalignment/mapping.html:28
 msgid ""
 "Translate these section titles as you would expect to find them on Wikipedia "
 "articles in your language. If, depending on context, a section title can "
@@ -76,37 +76,37 @@ msgstr ""
 "editores."
 
 #. Translators: Message indicating progress. N is the number of translations completed by the user. N is always bigger than 4.
-#: templates/sectionalignment/mapping.html:75
+#: sectionalignment/templates/sectionalignment/mapping.html:75
 #, fuzzy, python-format
 msgid "%(N)s translations completed!"
 msgstr "¡%(N)s Traducción completa!"
 
 #. Translators: Label for the section title in source language
-#: templates/sectionalignment/mapping.html:95
+#: sectionalignment/templates/sectionalignment/mapping.html:95
 msgid "Section to translate"
 msgstr "Sección para traducir"
 
 #. Translators: Label for the input in destination language
-#: templates/sectionalignment/mapping.html:108
+#: sectionalignment/templates/sectionalignment/mapping.html:108
 msgid "Your translation"
 msgstr "Tu traducción"
 
 #. Translators: Button label
-#: templates/sectionalignment/mapping.html:116
+#: sectionalignment/templates/sectionalignment/mapping.html:116
 msgid "+ Add an alternative translation"
 msgstr "+ Añadir una traducción alternativa"
 
 #. Translators: Button label
-#: templates/sectionalignment/mapping.html:122
+#: sectionalignment/templates/sectionalignment/mapping.html:122
 msgid "Submit translation"
 msgstr "Envía"
 
 #. Translators: Button label
-#: templates/sectionalignment/mapping.html:126
+#: sectionalignment/templates/sectionalignment/mapping.html:126
 msgid "Skip this one"
 msgstr "Saltar"
 
 #. Translators: Message shown when all translation tasks are complete.
-#: templates/sectionalignment/mapping.html:139
+#: sectionalignment/templates/sectionalignment/mapping.html:139
 msgid "✌ No more sections to map!"
 msgstr "✌ ¡No hay más secciones por traducir!"
