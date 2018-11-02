@@ -7,7 +7,12 @@ from django.http import HttpResponse
 
 from .models import Mapping, UserInput
 
-admin.site.register(Mapping)
+
+class MappingAdmin(admin.ModelAdmin):
+    list_filter = ['language']
+
+
+admin.site.register(Mapping, MappingAdmin)
 
 
 def custom_titled_filter(title):
