@@ -2,12 +2,18 @@
 Research apps for Gapfinder
 
 ## Deploying to labs instance
+0. Tested on Debian Buster
 1. Clone this repository to /srv/gapfindertools
 2. Add a really long secret key to /etc/profile, e.g.:
-   echo 'export DJANGO_SECRET_KEY="#)zbti_w!for_jack0xpefbi=&c@tsb2oua4j$e!djyhy&x9g7"'' | sudo tee --append /etc/profile
+   echo 'export DJANGO_SECRET_KEY="#)zbti_w!for_jack0xpefbi=&c@tsb2oua4j$e!djyhy&x9g7"' | sudo tee --append /etc/profile
+
    source /etc/profile
-3. Run /srv/gapfindertools/gapfindertools/labs_setup.sh
-4. After each update you may want to collect static files depending on
+3. Save database credentials to /etc/replica.my.cnf. See
+   https://wikitech.wikimedia.org/wiki/Help:Toolforge/Database#User_databases
+   for more info.
+4. Add your host to 'ALLOWED_HOSTS' in gapfindertools/settings_prod.py.
+5. Run /srv/gapfindertools/gapfindertools/labs_setup.sh
+6. After each update you may want to collect static files depending on
    whether you've changed CSS and JS files:
    - cd /srv/gapfindertools
    - sudo venv/bin/python manage.py collectstatic --settings=gapfindertools.settings_prod
