@@ -25,7 +25,7 @@ SECRET_KEY = os.environ.get(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['gapfinder-tools.wmflabs.org']
+ALLOWED_HOSTS = ['gapfinder-tools.wmflabs.org', 'gapfinder-tools-buster.wmflabs.org']
 
 WSGI_APPLICATION = 'gapfindertools.wsgi.application'
 
